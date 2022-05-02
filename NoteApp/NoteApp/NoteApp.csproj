@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows7.0</TargetFramework>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="MaterialDesignThemes" Version="4.5.0" />
+    <PackageReference Include="Prism.DryIoc" Version="8.1.97" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NoteApp.Core\NoteApp.Core.csproj" />
+    <ProjectReference Include="..\Modules\NoteApp.Modules.ModuleName\NoteApp.Modules.ModuleName.csproj" />
+    <ProjectReference Include="..\Services\NoteApp.Services.Interfaces\NoteApp.Services.Interfaces.csproj" />
+    <ProjectReference Include="..\Services\NoteApp.Services\NoteApp.Services.csproj" />
+  </ItemGroup>
+</Project>
