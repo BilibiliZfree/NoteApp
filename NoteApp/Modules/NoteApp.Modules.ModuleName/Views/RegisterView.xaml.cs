@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace NoteApp.Modules.ModuleName.Views
 {
     /// <summary>
-    /// LoginRegisterView.xaml 的交互逻辑
+    /// RegisterView.xaml 的交互逻辑
     /// </summary>
-    public partial class LoginRegisterView : UserControl
+    public partial class RegisterView : UserControl
     {
-        public LoginRegisterView()
+        public RegisterView()
         {
             InitializeComponent();
         }
