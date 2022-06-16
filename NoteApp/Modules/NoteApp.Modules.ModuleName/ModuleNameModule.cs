@@ -4,6 +4,8 @@ using NoteApp.Modules.ModuleName.Views;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;
+using Prism.Services.Dialogs;
+using System.Windows.Controls;
 
 namespace NoteApp.Modules.ModuleName
 {
@@ -25,26 +27,25 @@ namespace NoteApp.Modules.ModuleName
         /// <param name="containerProvider"></param>
         public void OnInitialized(IContainerProvider containerProvider)
         {
-            _regionManager.RequestNavigate(RegionNames.ContentRegion, "ViewA");
-            _regionManager.RequestNavigate(RegionNames.LoginRegion, "LoginView");
-            //_regionManager.RequestNavigate(RegionNames.BackRegion, "LoginSettingView");
-            //_regionManager.RequestNavigate(RegionNames.BackRegion, "LoginRegisterView");
-            //_regionManager.RegisterViewWithRegion(RegionNames.BackRegion, typeof(LoginRegisterView));
-            //_regionManager.RegisterViewWithRegion(RegionNames.BackRegion, typeof(LoginSettingView));
-            //_regionManager.RegisterViewWithRegion(RegionNames.BackRegion, typeof(LoginRegisterView));
-            //_regionManager.RegisterViewWithRegion(RegionNames.BackRegion, typeof(LoginSettingView));
+            _regionManager.RequestNavigate(RegionNames.ContentRegion, "ViewB");
+            //_regionManager.RequestNavigate(RegionNames.ForgotRegion, "ViewC");
         }
-
         /// <summary>
         /// 视图控件注册
         /// </summary>
         /// <param name="containerRegistry"></param>
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            containerRegistry.RegisterForNavigation<ViewA>();
-            containerRegistry.RegisterForNavigation<LoginView, LoginViewModel>();
-            containerRegistry.RegisterForNavigation<LoginRegisterView, LoginRegisterViewModel>();
-            containerRegistry.RegisterForNavigation<LoginSettingView, LoginSettingViewModel>();
+            //注册对话框
+            //导航
+            containerRegistry.RegisterForNavigation<ViewA, ViewAViewModel>();
+            containerRegistry.RegisterForNavigation<ViewB>();
+            containerRegistry.RegisterForNavigation<ViewC>();
+            //弹窗
+            containerRegistry.RegisterDialog<LoginView, LoginViewModel>();
+            containerRegistry.RegisterDialog<RegisterView, RegisterViewModel>();
+            containerRegistry.RegisterDialog<ForgotView, ForgotViewModel>();
+
         }
     }
 }

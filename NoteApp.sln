@@ -21,6 +21,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NoteApp", "NoteApp\NoteApp\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NoteApp.Core", "NoteApp\NoteApp.Core\NoteApp.Core.csproj", "{F32DF3E7-594E-410E-9066-C59209D1583D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Api", "Api", "{FE9C4427-4159-46C8-B3AD-BC07DC65FEA7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoteApp.Api", "NoteApp\NoteApp.Api\NoteApp.Api.csproj", "{7B75E609-FFC8-4C8E-A03C-D422BECC9CBE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +55,10 @@ Global
 		{F32DF3E7-594E-410E-9066-C59209D1583D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F32DF3E7-594E-410E-9066-C59209D1583D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F32DF3E7-594E-410E-9066-C59209D1583D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B75E609-FFC8-4C8E-A03C-D422BECC9CBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B75E609-FFC8-4C8E-A03C-D422BECC9CBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B75E609-FFC8-4C8E-A03C-D422BECC9CBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B75E609-FFC8-4C8E-A03C-D422BECC9CBE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -60,6 +68,7 @@ Global
 		{AB35E746-DC60-48DE-86C3-7A2B5CB6EC81} = {BCFC7A69-28B8-4FAD-B502-1A8B34CA0327}
 		{91DB434F-4A7B-4B18-853B-B3124C851AAD} = {E7844FB4-67F7-48C8-A6F9-CCEB1FDE9736}
 		{DDD7E149-32FE-4311-AE62-54ED54D51267} = {E7844FB4-67F7-48C8-A6F9-CCEB1FDE9736}
+		{7B75E609-FFC8-4C8E-A03C-D422BECC9CBE} = {FE9C4427-4159-46C8-B3AD-BC07DC65FEA7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FF1A8F74-8E7D-4775-9820-C1BE776725EC}

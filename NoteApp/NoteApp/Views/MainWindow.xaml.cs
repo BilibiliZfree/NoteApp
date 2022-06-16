@@ -10,6 +10,17 @@ namespace NoteApp.Views
         public MainWindow()
         {
             InitializeComponent();
+            //左键窗体移动
+            LoginBorder.MouseLeftButtonDown += (o, e) =>
+            {
+                DragMove();
+            };
+            //退出按钮
+            CloseButton.Click += (o, e) =>
+            {
+                if (MessageBox.Show("是否退出程序？", "", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                    Close();
+            };
         }
     }
 }

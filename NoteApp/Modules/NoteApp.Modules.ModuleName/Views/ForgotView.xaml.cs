@@ -10,16 +10,17 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace NoteApp.Views
+namespace NoteApp.Modules.ModuleName.Views
 {
     /// <summary>
-    /// LoginWindow.xaml 的交互逻辑
+    /// ForgotView.xaml 的交互逻辑
     /// </summary>
-    public partial class LoginWindow : Window
+    public partial class ForgotView : UserControl
     {
-        public LoginWindow()
+        public ForgotView()
         {
             InitializeComponent();
         }

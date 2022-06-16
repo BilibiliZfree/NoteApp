@@ -1,12 +1,18 @@
-﻿using NoteApp.Modules.ModuleName;
+﻿using NoteApp.Core.RegionAdapter;
+using NoteApp.Modules.ModuleName;
 using NoteApp.Modules.ModuleName.Views;
 using NoteApp.Services;
 using NoteApp.Services.Interfaces;
+using NoteApp.ViewModels;
 using NoteApp.Views;
 using Prism.DryIoc;
 using Prism.Ioc;
 using Prism.Modularity;
+using Prism.Regions;
+using Prism.Services.Dialogs;
+using System;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace NoteApp
 {
@@ -21,7 +27,23 @@ namespace NoteApp
         /// <returns></returns>
         protected override Window CreateShell()
         {
-            return Container.Resolve<LoginWindow>();
+            //return Container.Resolve<LoginWindow>();
+            return Container.Resolve<MainWindow>();
+        }
+
+        protected override void OnInitialized()
+        {
+            var dialog = Container.Resolve<IDialogService>();
+
+            dialog.ShowDialog("LoginView", callback =>
+            {
+                if (callback.Result != ButtonResult.OK)
+                {
+                    Environment.Exit(0);
+                    return;
+                }
+            });
+            base.OnInitialized();
         }
 
         /// <summary>
@@ -31,6 +53,8 @@ namespace NoteApp
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterSingleton<IMessageService, MessageService>();
+            //containerRegistry.RegisterDialogWindow<ShowDialogWindow>("ShowDialogWindow");
+
         }
         /// <summary>
         /// 模块化配置列表
@@ -39,6 +63,12 @@ namespace NoteApp
         protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)
         {
             moduleCatalog.AddModule<ModuleNameModule>();
+        }
+
+        protected override void ConfigureRegionAdapterMappings(RegionAdapterMappings regionAdapterMappings)
+        {
+            base.ConfigureRegionAdapterMappings(regionAdapterMappings);
+            regionAdapterMappings.RegisterMapping(typeof(StackPanel), Container.Resolve<StackPanelRegionAdapter>());
         }
     }
 }

@@ -7,10 +7,9 @@
     {
         public const string ContentRegion = "ContentRegion";
 
-        public const string LoginRegion = "LoginRegion";
+        public const string ShowDialog = "ShowDialog";
 
-        public const string FrontRegion = "FrontRegion";
+        public const string ForgotRegion = "ForgotRegion";
 
-        public const string BackRegion = "BackRegion";
     }
 }

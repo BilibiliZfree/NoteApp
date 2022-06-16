@@ -16,14 +16,13 @@ using System.Windows.Shapes;
 namespace NoteApp.Modules.ModuleName.Views
 {
     /// <summary>
-    /// LoginView.xaml 的交互逻辑
+    /// ViewC.xaml 的交互逻辑
     /// </summary>
-    public partial class LoginView : UserControl
+    public partial class ViewC : UserControl
     {
-        public LoginView()
+        public ViewC()
         {
             InitializeComponent();
         }
-
     }
 }
