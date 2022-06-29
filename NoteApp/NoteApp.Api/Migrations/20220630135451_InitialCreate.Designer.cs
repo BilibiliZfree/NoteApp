@@ -11,7 +11,7 @@ using NoteApp.Api.Data;
 namespace NoteApp.Api.Migrations
 {
     [DbContext(typeof(NoteAppContext))]
-    [Migration("20220623031229_InitialCreate")]
+    [Migration("20220630135451_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
