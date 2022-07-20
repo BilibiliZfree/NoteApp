@@ -23,9 +23,6 @@ namespace NoteApp.Api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("AuthorID")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("Context")
                         .HasColumnType("TEXT");
 
@@ -38,9 +35,12 @@ namespace NoteApp.Api.Migrations
                     b.Property<DateTime>("UpdateTime")
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("UserEntityID")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("ID");
 
-                    b.HasIndex("AuthorID");
+                    b.HasIndex("UserEntityID");
 
                     b.ToTable("Blogs");
                 });
@@ -73,11 +73,11 @@ namespace NoteApp.Api.Migrations
 
             modelBuilder.Entity("NoteApp.Api.Models.BlogEntity", b =>
                 {
-                    b.HasOne("NoteApp.Api.Models.UserEntity", "Author")
+                    b.HasOne("NoteApp.Api.Models.UserEntity", null)
                         .WithMany("Blogs")
-                        .HasForeignKey("AuthorID");
-
-                    b.Navigation("Author");
+                        .HasForeignKey("UserEntityID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("NoteApp.Api.Models.UserEntity", b =>

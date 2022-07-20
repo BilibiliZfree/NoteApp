@@ -34,7 +34,7 @@ namespace NoteApp.Api.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Title = table.Column<string>(type: "TEXT", nullable: true),
                     Context = table.Column<string>(type: "TEXT", nullable: true),
-                    AuthorID = table.Column<int>(type: "INTEGER", nullable: true),
+                    UserEntityID = table.Column<int>(type: "INTEGER", nullable: false),
                     CreateTime = table.Column<DateTime>(type: "TEXT", nullable: false),
                     UpdateTime = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
@@ -42,16 +42,17 @@ namespace NoteApp.Api.Migrations
                 {
                     table.PrimaryKey("PK_Blogs", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_Blogs_Users_AuthorID",
-                        column: x => x.AuthorID,
+                        name: "FK_Blogs_Users_UserEntityID",
+                        column: x => x.UserEntityID,
                         principalTable: "Users",
-                        principalColumn: "ID");
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Blogs_AuthorID",
+                name: "IX_Blogs_UserEntityID",
                 table: "Blogs",
-                column: "AuthorID");
+                column: "UserEntityID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

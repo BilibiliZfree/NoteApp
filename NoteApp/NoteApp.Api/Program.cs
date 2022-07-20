@@ -18,6 +18,7 @@ builder.Services.AddTransient<UsersService>();
 builder.Services.AddTransient<BlogsService>();
 // 定义数据库地址
 builder.Services.AddSqlite<NoteAppContext>("Data Source=Databases/NoteDatabase.db");
+//builder.Services.AddSqlite<NoteAppContext>("Data Source=Databases/NoteDatabaseTest.db");
 
 
 var app = builder.Build();

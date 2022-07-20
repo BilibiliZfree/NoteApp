@@ -27,15 +27,35 @@ namespace NoteApp.Api.Services
         {
             var User = await _appContext.Users.FindAsync(id);
             if (User == null) return new ApiResponse($"找不到序号为{id}的用户.");
+            var Blogs = await _appContext.Blogs.ToListAsync();
+            foreach (var item in Blogs)
+            {
+                if (item.UserEntityID == id)
+                    User.Blogs.Add(item);
+            }
             return new ApiResponse($"找到序号为{id}的用户{User.UserName}", true, User);
         }
 
         public async Task<ApiResponse> GetsResponseAsync()
         {
-            var context = await _appContext.Users.ToListAsync();
-            if (context is null || context.Count == 0)
+            var Users = await _appContext.Users.ToListAsync();
+            var Blogs = await _appContext.Blogs.ToListAsync();
+            if (Users is null || Users.Count == 0)
                 return new ApiResponse("数据库中并没有用户.");
-            return new ApiResponse($"数据库中有{context.Count}个用户.", true, context);
+            foreach (var user in Users)
+            {
+                if(user != null)
+                {
+                    foreach (var blog in Blogs)
+                    {
+                        if (blog.UserEntityID == user.ID)
+                        {
+                            user.Blogs.Add(blog);
+                        }
+                    }
+                }
+            }
+            return new ApiResponse($"数据库中有{Users.Count}个用户.{Blogs.Count}篇文章.", true, Users);
         }
 
         public async Task<ApiResponse> PostResponseAsync(UserEntity e)
@@ -49,10 +69,10 @@ namespace NoteApp.Api.Services
                     return new ApiResponse("添加用户成功！", true, e);
                 return new ApiResponse("添加用户失败！");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                return new ApiResponse("发生错误，添加用户失败");
+                return new ApiResponse("发生错误，添加用户失败\r\n" + ex);
             }
         }
 

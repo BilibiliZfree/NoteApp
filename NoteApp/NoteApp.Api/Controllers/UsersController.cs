@@ -57,6 +57,5 @@ namespace NoteApp.Api.Controllers
         {
             return await _service.DeleteResponseAsync(id);
         }
-        
     }
 }
