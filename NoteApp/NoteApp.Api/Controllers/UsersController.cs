@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 //using NoteApp.Api.Data;
-using NoteApp.Api.Models;
 using NoteApp.Api.Services;
 using NoteApp.Api.Services.Interfaces;
+using NoteApp.Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -57,5 +57,25 @@ namespace NoteApp.Api.Controllers
         {
             return await _service.DeleteResponseAsync(id);
         }
+
+
+        //登录 api/Users/LoginUserById
+        [HttpGet]
+        [Tags("用户登录")]
+        public async Task<ApiResponse> LoginUserByIdAsync(int id, string password)
+        {
+            return await _service.LoginResponseAsync(id, password);
+        }
+
+        //登录 api/Users/LoginUserByUserName
+        [HttpGet]
+        [Tags("用户登录")]
+        public async Task<ApiResponse> LoginUserByUsernameAsync(UserEntity user)
+        {
+            if (!string.IsNullOrEmpty(user.UserName) && !string.IsNullOrEmpty(user.Password))
+                return await _service.LoginResponseAsync(user.UserName, user.Password);
+            else
+                return new ApiResponse("输入用户信息错误");
+        }   
     }
 }

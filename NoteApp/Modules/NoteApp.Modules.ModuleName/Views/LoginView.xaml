@@ -7,6 +7,7 @@
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
+    xmlns:pboxe ="clr-namespace:NoteApp.Modules.ModuleName.ControlsExtension"
     d:DesignHeight="414"
     d:DesignWidth="540"
     prism:ViewModelLocator.AutoWireViewModel="True"
@@ -65,14 +66,17 @@
                             <TextBox
                                 Margin="50,10"
                                 VerticalAlignment="Top"
-                                materialDesign:HintAssist.Hint="账户"
+                                materialDesign:HintAssist.Hint="账号"
                                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
                                 TextWrapping="Wrap"
+                                Text="{Binding UserName}"
                                 VerticalScrollBarVisibility="Auto" />
                             <PasswordBox
                                 Margin="50,10"
                                 VerticalAlignment="Top"
                                 materialDesign:HintAssist.Hint="密码"
+                                pboxe:PasswordBoxExtension.BindPassword="True"
+                                pboxe:PasswordBoxExtension.BoundPassword="{Binding Path=Password,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                 Style="{StaticResource MaterialDesignOutlinedPasswordBox}" />
                             <Grid Margin="50,10">
                                 <Grid.ColumnDefinitions>

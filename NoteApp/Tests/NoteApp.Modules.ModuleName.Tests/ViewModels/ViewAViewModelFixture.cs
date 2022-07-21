@@ -2,6 +2,7 @@
 using NoteApp.Modules.ModuleName.ViewModels;
 using NoteApp.Services.Interfaces;
 using Prism.Regions;
+using System;
 using Xunit;
 
 namespace NoteApp.Modules.ModuleName.Tests.ViewModels
@@ -17,7 +18,6 @@ namespace NoteApp.Modules.ModuleName.Tests.ViewModels
             var messageService = new Mock<IMessageService>();
             messageService.Setup(x => x.GetMessage()).Returns(MessageServiceDefaultMessage);
             _messageServiceMock = messageService;
-
             _regionManagerMock = new Mock<IRegionManager>();
         }
 

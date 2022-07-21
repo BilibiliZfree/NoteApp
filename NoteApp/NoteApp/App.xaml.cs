@@ -53,6 +53,7 @@ namespace NoteApp
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterSingleton<IMessageService, MessageService>();
+            containerRegistry.RegisterSingleton<IRestSharpService, RestSharpService>();
             //containerRegistry.RegisterDialogWindow<ShowDialogWindow>("ShowDialogWindow");
 
         }

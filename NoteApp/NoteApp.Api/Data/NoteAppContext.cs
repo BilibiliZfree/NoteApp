@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using NoteApp.Api.Models;
+using NoteApp.Models;
 
 namespace NoteApp.Api.Data
 {

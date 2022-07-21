@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace NoteApp.Api.Models
+namespace NoteApp.Models
 {
     /// <summary>
     /// 基础类

@@ -1,7 +1,8 @@
-﻿
-using NoteApp.Core.Mvvm;
+﻿using NoteApp.Core.Mvvm;
+using NoteApp.Models;
+using NoteApp.Services;
+using NoteApp.Services.Interfaces;
 using Prism.Commands;
-using Prism.Navigation;
 using Prism.Regions;
 using Prism.Services.Dialogs;
 using System;
@@ -15,6 +16,8 @@ namespace NoteApp.Modules.ModuleName.ViewModels
 
         private readonly IRegionManager regionManager;
 
+        private readonly IRestSharpService _restSharpService;
+
         public string Title => "登录页面";
 
         public event Action<IDialogResult> RequestClose;
@@ -24,6 +27,7 @@ namespace NoteApp.Modules.ModuleName.ViewModels
         private bool _isEnabled = false;
 
         private string _message;
+
         private IDialogService dialogService;
 
         /// <summary>
@@ -85,14 +89,37 @@ namespace NoteApp.Modules.ModuleName.ViewModels
             set { SetProperty(ref _message, value); }
         }
 
+        private string userName;
+        /// <summary>
+        /// 用户名
+        /// </summary>
+        public string UserName
+        {
+            get { return userName; }
+            set { userName = value; RaisePropertyChanged(); }
+        }
+
+        private string password;
+        /// <summary>
+        /// 密码
+        /// </summary>
+        public string Password
+        {
+            get { return password; }
+            set { password = value; RaisePropertyChanged(); }
+        }
+
+
         #endregion
 
 
         #region 方法
 
-        public LoginViewModel(IRegionManager regionManager, IDialogService dialogService) : base(regionManager)
+        public LoginViewModel(IRegionManager regionManager, IDialogService dialogService, IRestSharpService restSharpService) : base(regionManager)
         {
             this.regionManager = regionManager;
+
+            _restSharpService = restSharpService;
 
             FlippingCommand = new DelegateCommand(Flipping);
 
@@ -105,6 +132,7 @@ namespace NoteApp.Modules.ModuleName.ViewModels
             CloseCommand = new DelegateCommand(Close);
 
             this.dialogService = dialogService;
+            //this.loginService = loginService;
         }
 
         private void Close()
@@ -157,6 +185,20 @@ namespace NoteApp.Modules.ModuleName.ViewModels
         /// </summary>
         private void Login()
         {
+            if(string.IsNullOrWhiteSpace(UserName) || string.IsNullOrWhiteSpace(Password))
+            {
+                Message = "用户名和密码不能为空";
+                return;
+            }
+            
+            ApiResponseR apiResponse = _restSharpService.GetApiResponse("https://localhost:7082/api/Users/LoginUserById", UserName, Password);
+
+            if(apiResponse.Status == false)
+            {
+                Message = apiResponse.Message;
+                return;
+            }
+
             RequestClose?.Invoke(new DialogResult(ButtonResult.OK));
         }
 

@@ -8,7 +8,9 @@
     <PackageReference Include="Prism.Wpf" Version="8.1.97" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\NoteApp.Api\NoteApp.Api.csproj" />
     <ProjectReference Include="..\..\NoteApp.Core\NoteApp.Core.csproj" />
     <ProjectReference Include="..\..\Services\NoteApp.Services.Interfaces\NoteApp.Services.Interfaces.csproj" />
+    <ProjectReference Include="..\..\Services\NoteApp.Services\NoteApp.Services.csproj" />
   </ItemGroup>
 </Project>

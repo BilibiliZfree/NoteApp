@@ -1,5 +1,12 @@
-﻿namespace NoteApp.Api.Models
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace NoteApp.Models
 {
+    /// <summary>
+    /// 博客类
+    /// </summary>
     public class BlogEntity : BaseEntity
     {
         /// <summary>

@@ -1,6 +1,8 @@
 ﻿using NoteApp.Core;
 using NoteApp.Modules.ModuleName.ViewModels;
 using NoteApp.Modules.ModuleName.Views;
+using NoteApp.Services;
+using NoteApp.Services.Interfaces;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;
@@ -27,7 +29,8 @@ namespace NoteApp.Modules.ModuleName
         /// <param name="containerProvider"></param>
         public void OnInitialized(IContainerProvider containerProvider)
         {
-            _regionManager.RequestNavigate(RegionNames.ContentRegion, "ViewB");
+            //_regionManager.RequestNavigate(RegionNames.ContentRegion, "ViewB");
+            _regionManager.RequestNavigate(RegionNames.ContentRegion, "ViewD");
             //_regionManager.RequestNavigate(RegionNames.ForgotRegion, "ViewC");
         }
         /// <summary>
@@ -37,10 +40,12 @@ namespace NoteApp.Modules.ModuleName
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
             //注册对话框
+            //服务
             //导航
             containerRegistry.RegisterForNavigation<ViewA, ViewAViewModel>();
             containerRegistry.RegisterForNavigation<ViewB>();
             containerRegistry.RegisterForNavigation<ViewC>();
+            containerRegistry.RegisterForNavigation<ViewD>();
             //弹窗
             containerRegistry.RegisterDialog<LoginView, LoginViewModel>();
             containerRegistry.RegisterDialog<RegisterView, RegisterViewModel>();

@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using NoteApp.Api.Data;
-using NoteApp.Api.Models;
 using NoteApp.Api.Services;
 using NoteApp.Api.Services.Interfaces;
 

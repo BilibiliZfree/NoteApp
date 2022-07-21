@@ -1,5 +1,4 @@
-﻿using NoteApp.Api.Models;
-
+﻿
 namespace NoteApp.Api.Services.Interfaces
 {
     /// <summary>

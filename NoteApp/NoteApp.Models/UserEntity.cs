@@ -1,6 +1,13 @@
-﻿namespace NoteApp.Api.Models
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace NoteApp.Models
 {
-    public class UserEntity : BaseEntity
+    /// <summary>
+    /// 用户类
+    /// </summary>
+    public class UserEntity :BaseEntity
     {
         /// <summary>
         /// 用户昵称

@@ -1,17 +1,26 @@
-﻿namespace NoteApp.Api.Models
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace NoteApp.Models
 {
     /// <summary>
     /// WebApi结果实体
     /// </summary>
     public class ApiResponse
     {
-        public ApiResponse(string? message, bool status = false)
+        public ApiResponse(string message, bool status = false)
         {
             Message = message;
             Status = status;
         }
 
-        public ApiResponse(bool status, object? @object)
+        public ApiResponse(object @object)
+        {
+            Object = @object;
+        }
+
+        public ApiResponse(bool status, object @object)
         {
             Status = status;
             Object = @object;
@@ -22,12 +31,10 @@
         /// <param name="message">提示信息</param>
         /// <param name="status">返回状态</param>
         /// <param name="object">代入实体</param>
-        public ApiResponse(string? message, bool status, object? @object) : this(message, status)
+        public ApiResponse(string message, bool status, object @object) : this(message, status)
         {
             Object = @object;
         }
-
-
 
         /// <summary>
         /// 提示信息

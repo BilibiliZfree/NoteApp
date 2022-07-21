@@ -17,7 +17,7 @@ namespace NoteApp.Api.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.6");
 
-            modelBuilder.Entity("NoteApp.Api.Models.BlogEntity", b =>
+            modelBuilder.Entity("NoteApp.Models.BlogEntity", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -45,7 +45,7 @@ namespace NoteApp.Api.Migrations
                     b.ToTable("Blogs");
                 });
 
-            modelBuilder.Entity("NoteApp.Api.Models.UserEntity", b =>
+            modelBuilder.Entity("NoteApp.Models.UserEntity", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -71,16 +71,16 @@ namespace NoteApp.Api.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("NoteApp.Api.Models.BlogEntity", b =>
+            modelBuilder.Entity("NoteApp.Models.BlogEntity", b =>
                 {
-                    b.HasOne("NoteApp.Api.Models.UserEntity", null)
+                    b.HasOne("NoteApp.Models.UserEntity", null)
                         .WithMany("Blogs")
                         .HasForeignKey("UserEntityID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("NoteApp.Api.Models.UserEntity", b =>
+            modelBuilder.Entity("NoteApp.Models.UserEntity", b =>
                 {
                     b.Navigation("Blogs");
                 });

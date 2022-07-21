@@ -1,7 +1,7 @@
 ﻿using NoteApp.Api.Data;
-using NoteApp.Api.Models;
 using NoteApp.Api.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using NoteApp.Models;
 
 namespace NoteApp.Api.Services
 {
