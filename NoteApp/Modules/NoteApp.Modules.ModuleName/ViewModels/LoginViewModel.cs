@@ -1,4 +1,5 @@
-﻿using NoteApp.Core.Mvvm;
+﻿using NoteApp.Core;
+using NoteApp.Core.Mvvm;
 using NoteApp.Models;
 using NoteApp.Services;
 using NoteApp.Services.Interfaces;
@@ -89,14 +90,14 @@ namespace NoteApp.Modules.ModuleName.ViewModels
             set { SetProperty(ref _message, value); }
         }
 
-        private string userName;
+        private string userId;
         /// <summary>
         /// 用户名
         /// </summary>
-        public string UserName
+        public string UserId
         {
-            get { return userName; }
-            set { userName = value; RaisePropertyChanged(); }
+            get { return userId; }
+            set { userId = value; RaisePropertyChanged(); }
         }
 
         private string password;
@@ -156,8 +157,8 @@ namespace NoteApp.Modules.ModuleName.ViewModels
             dialogService.ShowDialog(navigatePath, param,
                 (result) =>
                 {
-                    var r = result.Parameters;
-                    MessageBox.Show(r.GetValue<string>("test"));
+                    var diaResult = result.Parameters;
+                    MessageBox.Show(diaResult.GetValue<string>("dia"));
                 });
             /**
             if (navigatePath != null)
@@ -185,15 +186,15 @@ namespace NoteApp.Modules.ModuleName.ViewModels
         /// </summary>
         private void Login()
         {
-            if(string.IsNullOrWhiteSpace(UserName) || string.IsNullOrWhiteSpace(Password))
+            if(string.IsNullOrWhiteSpace(userId) || string.IsNullOrWhiteSpace(Password))
             {
                 Message = "用户名和密码不能为空";
                 return;
             }
             
-            ApiResponseR apiResponse = _restSharpService.GetApiResponse("https://localhost:7082/api/Users/LoginUserById", UserName, Password);
+            ApiResponseR apiResponse = _restSharpService.GetApiResponse(WebApiUrl.LoginUserByIdUrl, userId, Password);
 
-            if(apiResponse.Status == false)
+            if(!apiResponse.Status)
             {
                 Message = apiResponse.Message;
                 return;

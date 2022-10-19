@@ -69,7 +69,7 @@
                                 materialDesign:HintAssist.Hint="账号"
                                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
                                 TextWrapping="Wrap"
-                                Text="{Binding UserName}"
+                                Text="{Binding UserId}"
                                 VerticalScrollBarVisibility="Auto" />
                             <PasswordBox
                                 Margin="50,10"
@@ -85,8 +85,8 @@
                                 </Grid.ColumnDefinitions>
                                 <Button
                                     Command="{Binding ShowDialogCommand}"
-                                    CommandParameter="ForgotView"
-                                    Content="忘记密码？"
+                                    CommandParameter="ChangeView"
+                                    Content="修改密码"
                                     FontFamily="Kaiti"
                                     Foreground="Black"
                                     Style="{StaticResource MaterialDesignFlatAccentButton}" />

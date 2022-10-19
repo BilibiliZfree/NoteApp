@@ -3,6 +3,8 @@ using NoteApp.Api.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using NoteApp.Services;
 using NoteApp.Models;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Cryptography.Xml;
 
 namespace NoteApp.Api.Services
 {
@@ -70,17 +72,22 @@ namespace NoteApp.Api.Services
             {
                 if (e == null)
                     return new ApiResponse("传入用户不能为空.");
+                //判断用户是否重复
+                //if (_appContext.Users.Where(o => o.UserName == e.UserName).Count()>0)
+                if (_appContext.Users.Where(o => o.UserName == e.UserName).Any())
+                    return new ApiResponse("用户已经存在.");
+                if (e.Password == null)
+                    return new ApiResponse("输入密码不能为空.");
                 if(e.Password != null)
                     e.Password = GetHashSHA256(e.Password);
                 _appContext.Users.Add(e);
                 if (await _appContext.SaveChangesAsync() > 0)
                     return new ApiResponse("添加用户成功！", true, e);
-                return new ApiResponse("添加用户失败！");
+                return new ApiResponse("添加用户失败!");
             }
             catch (Exception ex)
             {
-
-                return new ApiResponse("发生错误，添加用户失败\r\n" + ex);
+                return new ApiResponse("发生错误，添加用户失败!\r\n" + ex);
             }
         }
 
@@ -128,6 +135,24 @@ namespace NoteApp.Api.Services
                 return new ApiResponse("登录成功", true, User);
             }
             return new ApiResponse("密码错误.");
+        }
+
+        public async Task<ApiResponse> ChangePasswordByUserNameAsync(string username,string oldPassword,string newPassword)
+        {
+            if (string.IsNullOrEmpty(username)) return new ApiResponse("用户名为空!");
+            if (string.IsNullOrEmpty(oldPassword)) return new ApiResponse("旧密码为空!");
+            if (string.IsNullOrEmpty(newPassword)) return new ApiResponse("新密码为空!");
+            var User = await _appContext.Users.FirstOrDefaultAsync(o => o.UserName == username);
+            if (User == null)
+                return new ApiResponse("找不到该用户.");
+            if (User.Password == GetHashSHA256(oldPassword))
+            {
+                User.Password = GetHashSHA256(newPassword);
+                _appContext.Users.Update(User);
+                if (await _appContext.SaveChangesAsync() > 0)
+                    return new ApiResponse("用户已成功修改.", true);
+            }
+            return new ApiResponse("旧密码错误，修改密码失败.");
         }
 
         public string GetHashSHA256(string s)

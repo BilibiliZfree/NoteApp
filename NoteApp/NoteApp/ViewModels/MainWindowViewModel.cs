@@ -22,7 +22,7 @@ namespace NoteApp.ViewModels
         public MainWindowViewModel(IRegionManager regionManager)
         {
             this.regionManager = regionManager;
-            //NavigateCommand = new DelegateCommand<string>(Navigate);
+            //NavigateCommand = new RegisterCommand<string>(Navigate);
         }
 
         private void Navigate(string navigatePath)

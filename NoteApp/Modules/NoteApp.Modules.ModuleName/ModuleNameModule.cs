@@ -49,7 +49,7 @@ namespace NoteApp.Modules.ModuleName
             //弹窗
             containerRegistry.RegisterDialog<LoginView, LoginViewModel>();
             containerRegistry.RegisterDialog<RegisterView, RegisterViewModel>();
-            containerRegistry.RegisterDialog<ForgotView, ForgotViewModel>();
+            containerRegistry.RegisterDialog<ChangeView, ChangeViewModel>();
 
         }
     }

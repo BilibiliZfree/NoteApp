@@ -39,14 +39,14 @@ namespace NoteApp.Modules.ModuleName.ViewModels
             base(regionManager)
         {
             _restSharpService = restSharpService;
-            ApiResponseR apiResponse = _restSharpService.GetApiResponse("https://localhost:7082/api/Users/LoginUserById","1","string");
+            RestResponse apiResponse = _restSharpService.GetRestResponse("https://localhost:7082/api/Blogs/GetBlogs");
             //https://localhost:7082/api/Blogs/GetBlogs
             //https://localhost:7082/api/Users/LoginUserById?id=1&password=string
             ////默认使用Get
             //RestRequest restRequest = new RestRequest() { Method = Method.Get };
             //RestResponse apiBaseRequest = client.Get(restRequest);
-            MyProperty = apiResponse.Object.UserName;
-            YouProperty = apiResponse.Message;
+            MyProperty = apiResponse.Content;
+            YouProperty = apiResponse.IsSuccessful.ToString();
         }
 
 

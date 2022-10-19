@@ -7,6 +7,7 @@
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
+    xmlns:pboxe ="clr-namespace:NoteApp.Modules.ModuleName.ControlsExtension"
     d:DesignHeight="540"
     d:DesignWidth="500"
     prism:ViewModelLocator.AutoWireViewModel="True"
@@ -20,15 +21,15 @@
         </Style>
     </prism:Dialog.WindowStyle>
     <Border>
-        <DockPanel Margin="5" Background="#0AC1FF">
+        <DockPanel Background="#0AC1FF">
             <StackPanel
                 Margin="5"
                 HorizontalAlignment="Right"
                 DockPanel.Dock="Top"
                 Orientation="Horizontal">
                 <Button
-                    Command="{Binding DelegateCommand}"
-                    CommandParameter="Close"
+                    Command="{Binding CloseCommand}"
+                    CommandParameter="{Binding ReturnMessage}"
                     Content="{materialDesign:PackIcon Close}"
                     Style="{DynamicResource MaterialDesignIconForegroundButton}"
                     ToolTip="关闭窗口" />
@@ -41,11 +42,16 @@
                 DockPanel.Dock="Top"
                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
                 TextWrapping="NoWrap"
+                IsEnabled="{Binding IsEnabled}"
+                Text="{Binding UserName}"
                 VerticalScrollBarVisibility="Auto" />
             <PasswordBox
                 Margin="50,10"
                 VerticalAlignment="Top"
                 materialDesign:HintAssist.Hint="请输入密码"
+                IsEnabled="{Binding IsEnabled}"
+                pboxe:PasswordBoxExtension.BindPassword="True"
+                pboxe:PasswordBoxExtension.BoundPassword="{Binding Path=Password,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                 Background="White"
                 DockPanel.Dock="Top"
                 Style="{StaticResource MaterialDesignOutlinedPasswordBox}" />
@@ -53,6 +59,9 @@
                 Margin="50,10"
                 VerticalAlignment="Top"
                 materialDesign:HintAssist.Hint="请确认密码"
+                IsEnabled="{Binding IsEnabled}"
+                pboxe:PasswordBoxExtension.BindPassword="True"
+                pboxe:PasswordBoxExtension.BoundPassword="{Binding Path=RePassword,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                 Background="White"
                 DockPanel.Dock="Top"
                 Style="{StaticResource MaterialDesignOutlinedPasswordBox}" />
@@ -64,6 +73,8 @@
                 DockPanel.Dock="Top"
                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
                 TextWrapping="NoWrap"
+                IsEnabled="{Binding IsEnabled}"
+                Text="{Binding Telphone}"
                 VerticalScrollBarVisibility="Auto" />
             <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
                 <TextBox
@@ -74,18 +85,31 @@
                     Background="White"
                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
                     TextWrapping="NoWrap"
+                    IsEnabled="{Binding IsEnabled}"
+                    Text="{Binding Verification}"
                     VerticalScrollBarVisibility="Auto" />
                 <Button
                     Height="40"
                     Margin="50,15"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Top"
-                    Content="获取验证码" />
+                    Content="获取验证码" 
+                    IsEnabled="{Binding IsEnabled}"
+                    Command="{Binding SendVerificationCommand}"/>
             </StackPanel>
+            <TextBlock 
+                DockPanel.Dock="Top"
+                Margin="50,10"
+                Height="25"
+                Text="{Binding Message}"
+                VerticalAlignment="Center"
+                Foreground="Red"/>
             <Button
                 Height="40"
                 Margin="50,10"
-                Content="注册账号" />
+                Content="注册账号"
+                IsEnabled="{Binding IsEnabled}"
+                Command="{Binding RegisterCommand}"/>
         </DockPanel>
     </Border>
 </UserControl>

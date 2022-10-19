@@ -10,45 +10,34 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
 
 namespace NoteApp.Modules.ModuleName.ViewModels
 {
-
-    public class RegisterViewModel : RegionViewModelBase, IDialogAware
+    public class ChangeViewModel : RegionViewModelBase, IDialogAware
     {
-
         #region 字段
-        public string Title => "注册新用户";
 
-        
+        public string Title => "修改账号信息";
 
         private readonly IRegionManager _regionManager;
         private readonly IRestSharpService _restSharpService;
 
-
         public event Action<IDialogResult> RequestClose;
-
-        
 
         #endregion
 
+
         #region 属性
 
-        public string DialogResultStr { get; private set; }
-        /// <summary>
-        /// 关闭窗口
-        /// </summary>
         public DelegateCommand<string> CloseCommand { get; private set; }
         /// <summary>
         /// 发送验证码
         /// </summary>
         public DelegateCommand SendVerificationCommand { get; private set; }
         /// <summary>
-        /// 登录命令
+        /// 修改密码
         /// </summary>
-        public DelegateCommand RegisterCommand { get; private set; }
+        public DelegateCommand ChangePasswordCommand { get; private set; }
 
         private bool _isEnabled = true;
         /// <summary>
@@ -63,6 +52,22 @@ namespace NoteApp.Modules.ModuleName.ViewModels
             set
             {
                 SetProperty(ref _isEnabled, value);
+            }
+        }
+
+        private bool _isSending = true;
+        /// <summary>
+        /// 可用属性:发送验证码专用
+        /// </summary>
+        public bool IsSending
+        {
+            get
+            {
+                return _isSending;
+            }
+            set
+            {
+                SetProperty(ref _isSending, value);
             }
         }
 
@@ -86,7 +91,6 @@ namespace NoteApp.Modules.ModuleName.ViewModels
             set { SetProperty(ref _returnMessage, value); }
         }
 
-
         private string userName;
         /// <summary>
         /// 用户名
@@ -97,34 +101,34 @@ namespace NoteApp.Modules.ModuleName.ViewModels
             set { userName = value; RaisePropertyChanged(); }
         }
 
-        private string password;
+        private string oldPassword;
         /// <summary>
-        /// 密码
+        /// 旧密码
         /// </summary>
-        public string Password
+        public string OldPassword
         {
-            get { return password; }
-            set { password = value; RaisePropertyChanged(); }
+            get { return oldPassword; }
+            set { oldPassword = value; RaisePropertyChanged(); }
         }
 
-        private string rePassword;
+        private string newPassword;
         /// <summary>
-        /// 重复密码
+        /// 新密码
         /// </summary>
-        public string RePassword
+        public string NewPassword
         {
-            get { return rePassword; }
-            set { rePassword = value; RaisePropertyChanged(); }
+            get { return newPassword; }
+            set { newPassword = value; RaisePropertyChanged(); }
         }
 
-        private string telphone;
+        private string reNewPassword;
         /// <summary>
-        /// 手机号码
+        /// 重复新密码
         /// </summary>
-        public string Telphone
+        public string ReNewPassword
         {
-            get { return telphone; }
-            set { telphone = value; RaisePropertyChanged(); }
+            get { return reNewPassword; }
+            set { reNewPassword = value; RaisePropertyChanged(); }
         }
 
         private string verification;
@@ -140,20 +144,17 @@ namespace NoteApp.Modules.ModuleName.ViewModels
         #endregion
 
 
-        public RegisterViewModel(IRegionManager regionManager, IRestSharpService restSharpService) : base(regionManager)
+        #region 方法
+
+        public ChangeViewModel(IRegionManager regionManager, IRestSharpService restSharpService) : base(regionManager)
         {
             _regionManager = regionManager;
             _restSharpService = restSharpService;
             CloseCommand = new DelegateCommand<string>(Close);
-            RegisterCommand = new DelegateCommand(Register);
             SendVerificationCommand = new DelegateCommand(VerificationSending);
-            ReturnMessage = "退出注册窗口.";
+            ChangePasswordCommand = new DelegateCommand(Change);
+            ReturnMessage = "已退出修改密码界面.";
         }
-
-        
-
-
-
 
 
         public bool CanCloseDialog()
@@ -163,22 +164,20 @@ namespace NoteApp.Modules.ModuleName.ViewModels
 
         public void OnDialogClosed()
         {
-            
+
         }
 
         public void OnDialogOpened(IDialogParameters parameters)
         {
-            
+
         }
 
-        /// <summary>
-        /// 关闭逻辑
-        /// </summary>
         private void Close(string para)
         {
             DialogResult dialogResult = new DialogResult();
+            //对应LoginViewModel类ShowDialog方法
             dialogResult.Parameters.Add("dia", para);
-            RequestClose?.Invoke(dialogResult) ;
+            RequestClose?.Invoke(dialogResult);
         }
 
         private void VerificationSending()
@@ -186,21 +185,20 @@ namespace NoteApp.Modules.ModuleName.ViewModels
             Message = "验证码已经发送,请注意查收短信.";
         }
 
-
         /// <summary>
-        /// 登录逻辑
+        /// 修改密码逻辑
         /// </summary>
-        private void Register()
+        private void Change()
         {
-            if(string.IsNullOrEmpty(UserName) || string.IsNullOrEmpty(Password) 
-                || string.IsNullOrEmpty(RePassword) || string.IsNullOrEmpty(Telphone))
+            if (string.IsNullOrEmpty(UserName) || string.IsNullOrEmpty(OldPassword)
+                || string.IsNullOrEmpty(NewPassword) || string.IsNullOrEmpty(ReNewPassword) )
             {
                 Message = "请完善资料.";
                 return;
             }
-            if (Password != Password)
+            if (NewPassword != ReNewPassword)
             {
-                Message = "请确保密码输入一致..";
+                Message = "两个新密码不一致.";
                 return;
             }
             if (string.IsNullOrEmpty(Verification))
@@ -215,13 +213,17 @@ namespace NoteApp.Modules.ModuleName.ViewModels
             }
             else
             {
-                ApiResponseR apiResponse = _restSharpService.PostApiResponse(WebApiUrl.RegisterUserUrl, UserName,Password,Telphone);
+                ApiResponseR apiResponse = _restSharpService.PutApiResponse(WebApiUrl.ChangeUserUrl,UserName,OldPassword,NewPassword);
                 Message = apiResponse.Message;
-                if (!apiResponse.Status)                    
+                if (!apiResponse.Status)
                     return;
+                Message = "密码已修改.";
+                ReturnMessage = "密码已成功修改.\n\r请牢记密码，谨防账号丢失.";
                 IsEnabled = false;
-                ReturnMessage = $"您已成功完成注册\n\r账号:{apiResponse.Object.ID}\n\r用户名:{apiResponse.Object.UserName}\n\r请牢记密码，防止丢失账号.";
             }
         }
+
+        #endregion
+
     }
 }

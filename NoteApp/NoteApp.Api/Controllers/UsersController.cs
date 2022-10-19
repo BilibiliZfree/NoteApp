@@ -76,6 +76,15 @@ namespace NoteApp.Api.Controllers
                 return await _service.LoginResponseAsync(user.UserName, user.Password);
             else
                 return new ApiResponse("输入用户信息错误");
-        }   
+        }
+        //api/Users/ChangePasswordByUserName
+        [HttpPost]
+        [Tags("用户资料修改")]
+        public async Task<ApiResponse> ChangePasswordByUserNameAsync(string username, string oldPassword, string newPassword)
+        {
+            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(oldPassword) || string.IsNullOrEmpty(newPassword))
+                return new ApiResponse("输入用户信息错误");
+            return await _service.ChangePasswordByUserNameAsync(username, oldPassword,newPassword);
+        }
     }
 }

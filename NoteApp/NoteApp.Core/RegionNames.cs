@@ -9,7 +9,7 @@
 
         public const string ShowDialog = "ShowDialog";
 
-        public const string ForgotRegion = "ForgotRegion";
+        public const string ChangeRegion = "ChangeRegion";
 
     }
 }
