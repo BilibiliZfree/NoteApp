@@ -11,7 +11,7 @@ namespace NoteApp.Views
         {
             InitializeComponent();
             //左键窗体移动
-            LoginBorder.MouseLeftButtonDown += (o, e) =>
+            MainBoeder.MouseLeftButtonDown += (o, e) =>
             {
                 DragMove();
             };

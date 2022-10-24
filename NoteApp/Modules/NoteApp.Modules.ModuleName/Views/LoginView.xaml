@@ -15,7 +15,7 @@
     <prism:Dialog.WindowStyle>
         <Style TargetType="Window">
             <Setter Property="Width" Value="540" />
-            <Setter Property="Height" Value="414" />
+            <Setter Property="Height" Value="424" />
             <Setter Property="SizeToContent" Value="Manual" />
             <Setter Property="ResizeMode" Value="NoResize" />
             <Setter Property="AllowsTransparency" Value="True" />
@@ -53,7 +53,7 @@
                             <Image
                                 Width="100"
                                 Height="100"
-                                Source="C:\Users\98546\source\repos\NoteApp\NoteApp\NoteApp\Resources\Images\img.jpg">
+                                Source="C:\Users\紫枫伊\Documents\source\repos\NoteApp\NoteApp\NoteApp\Resources\Images\img.jpg">
                                 <Image.Clip>
                                     <EllipseGeometry
                                         Center="50,50"
@@ -114,6 +114,9 @@
                                     Foreground="Black"
                                     Text="登 录" />
                             </Button>
+                            <ProgressBar IsIndeterminate="True"
+                                         Visibility="{Binding Visibility}"
+                                         Margin="50 0"/>
                         </StackPanel>
                     </Grid>
                 </DockPanel>

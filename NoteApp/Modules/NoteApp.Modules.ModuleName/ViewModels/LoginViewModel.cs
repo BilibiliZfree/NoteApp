@@ -7,6 +7,8 @@ using Prism.Commands;
 using Prism.Regions;
 using Prism.Services.Dialogs;
 using System;
+using System.Net;
+using System.Threading;
 using System.Windows;
 
 namespace NoteApp.Modules.ModuleName.ViewModels
@@ -80,6 +82,16 @@ namespace NoteApp.Modules.ModuleName.ViewModels
             }
         }
 
+        private string _visibility;
+        /// <summary>
+        /// 进度条显示属性
+        /// </summary>
+        public string Visibility
+        {
+            get { return _visibility; }
+            set { SetProperty(ref _visibility, value); }
+        }
+
 
         /// <summary>
         /// 提示信息
@@ -134,6 +146,7 @@ namespace NoteApp.Modules.ModuleName.ViewModels
 
             this.dialogService = dialogService;
             //this.loginService = loginService;
+            ChangeVisibility();
         }
 
         private void Close()
@@ -184,23 +197,25 @@ namespace NoteApp.Modules.ModuleName.ViewModels
         /// <summary>
         /// 登录逻辑
         /// </summary>
-        private void Login()
+        private async void Login()
         {
             if(string.IsNullOrWhiteSpace(userId) || string.IsNullOrWhiteSpace(Password))
             {
                 Message = "用户名和密码不能为空";
                 return;
             }
-            
-            ApiResponseR apiResponse = _restSharpService.GetApiResponse(WebApiUrl.LoginUserByIdUrl, userId, Password);
+            ChangeVisibility();
+            ApiResponseR apiResponse =await _restSharpService.GetApiResponseAsync(WebApiUrl.LoginUserByIdUrl, userId, Password);
 
             if(!apiResponse.Status)
             {
                 Message = apiResponse.Message;
+                ChangeVisibility();
                 return;
             }
-
-            RequestClose?.Invoke(new DialogResult(ButtonResult.OK));
+            DialogParameters keyValues = new DialogParameters();
+            keyValues.Add("loginResult",apiResponse.Object);
+            RequestClose?.Invoke(new DialogResult(ButtonResult.OK,keyValues));
         }
 
         private void Execute()
@@ -227,6 +242,21 @@ namespace NoteApp.Modules.ModuleName.ViewModels
         public void OnDialogOpened(IDialogParameters parameters)
         {
 
+        }
+
+        public void ChangeVisibility()
+        {
+            if(Visibility == null)
+            {
+                Visibility = "Hidden";
+                return;
+            }
+            if (Visibility.Equals("Hidden"))
+            {
+                Visibility = "Visible";
+                return;
+            }
+            Visibility = "Hidden";
         }
 
         #endregion

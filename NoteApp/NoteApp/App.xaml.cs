@@ -1,4 +1,7 @@
-﻿using NoteApp.Core.RegionAdapter;
+﻿using Microsoft.AspNetCore.Session;
+using NoteApp.Core;
+using NoteApp.Core.RegionAdapter;
+using NoteApp.Models;
 using NoteApp.Modules.ModuleName;
 using NoteApp.Modules.ModuleName.Views;
 using NoteApp.Services;
@@ -11,6 +14,8 @@ using Prism.Modularity;
 using Prism.Regions;
 using Prism.Services.Dialogs;
 using System;
+using System.Net;
+using System.Reflection.Metadata;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -21,6 +26,7 @@ namespace NoteApp
     /// </summary>
     public partial class App : PrismApplication
     {
+
         /// <summary>
         /// 程序启动页
         /// </summary>
@@ -28,7 +34,30 @@ namespace NoteApp
         protected override Window CreateShell()
         {
             //return Container.Resolve<LoginWindow>();
+            //return Container.Resolve<MainWindow>();
             return Container.Resolve<MainWindow>();
+        }
+
+        public static void LoginOut(IContainerProvider containerProvider)
+        {
+            Current.MainWindow.Hide();
+
+            var dialog = containerProvider.Resolve<IDialogService>();
+
+            dialog.ShowDialog("LoginView", callback =>
+            {
+                if (callback.Result != ButtonResult.OK)
+                {
+                    Environment.Exit(0);
+                    return;
+                }
+                AppSession.session( callback.Parameters.GetValue<UserEntity>("loginResult") );
+
+            });
+            var server = Current.MainWindow.DataContext as IConfigureService;
+            if (server != null)
+                server.Configure();
+            Current.MainWindow.Show();
         }
 
         protected override void OnInitialized()
@@ -42,9 +71,16 @@ namespace NoteApp
                     Environment.Exit(0);
                     return;
                 }
+                AppSession.session(callback.Parameters.GetValue<UserEntity>("loginResult"));
+
             });
+            var server = Current.MainWindow.DataContext as IConfigureService;
+            if (server != null)
+                server.Configure();
             base.OnInitialized();
         }
+
+
 
         /// <summary>
         /// 服务注册

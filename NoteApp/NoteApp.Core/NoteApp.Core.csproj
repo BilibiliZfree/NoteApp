@@ -9,4 +9,7 @@
   <ItemGroup>
     <Folder Include="RegionAdapter\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NoteApp.Models\NoteApp.Models.csproj" />
+  </ItemGroup>
 </Project>
