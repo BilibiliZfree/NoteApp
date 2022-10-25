@@ -8,10 +8,11 @@ using Prism.Mvvm;
 using Prism.Regions;
 using System;
 using System.Net;
+using System.Windows;
 
 namespace NoteApp.ViewModels
 {
-    public class MainWindowViewModel : RegionViewModelBase, IConfigureService
+    public class MainWindowViewModel : RegionViewModelBase, IConfigureService, IRegionMemberLifetime
     {
         #region 字段
 
@@ -19,7 +20,7 @@ namespace NoteApp.ViewModels
 
         private readonly IRegionManager _regionManager;
 
-        public DelegateCommand LoginOutCommand { get; private set; }
+        public DelegateCommand<string> DelegateCommands { get; private set; }
 
         public DelegateCommand<string> NavigateCommand { get; private set; }
         #endregion
@@ -63,25 +64,51 @@ namespace NoteApp.ViewModels
             set { SetProperty(ref _blogsCountMessage, value); }
         }
 
+        public bool KeepAlive => false;
+
 
         #endregion
 
 
         public MainWindowViewModel(IContainerProvider containerProvider, IRegionManager regionManager) : base(regionManager)
         {
-            LoginOutCommand = new DelegateCommand(() =>
-            {
-                //注销当前用户
-                App.LoginOut(containerProvider);
-            });
             _containerProvider = containerProvider;
             _regionManager = regionManager;
+            DelegateCommands = new DelegateCommand<string>(DelegateMethod);
+            NavigateCommand = new DelegateCommand<string>(Navigate);
         }
-        //public MainWindowViewModel(IRegionManager regionManager)
-        //{
-        //    this.regionManager = regionManager;
-        //    //NavigateCommand = new RegisterCommand<string>(Navigate);
-        //}
+
+        private void DelegateMethod(string arg)
+        {
+            switch (arg)
+            {
+                case "LoginOut":
+                    LoginOut();
+                    break;
+                case "Exit":
+                    Exit();
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void LoginOut()
+        {
+            App.LoginOut(_containerProvider);
+        }
+
+        private void Exit()
+        {
+            if (MessageBox.Show("确认退出应用？","请选择",MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            {
+                App.Current.MainWindow.Close();
+            }
+            else
+            {
+                return;
+            }
+        }
 
         private void Navigate(string navigatePath)
         {
@@ -89,9 +116,19 @@ namespace NoteApp.ViewModels
                 _regionManager.RequestNavigate(RegionNames.ContentRegion, navigatePath);
         }
 
+        //public override bool IsNavigationTarget(NavigationContext navigationContext)
+        //{
+        //    // 当切换到本界面时：
+        //    // 当返回True的时候，返回容器里面的view
+        //    // 当返回 False的时候，返回一个新的view
+        //    // 和 KeepAlive时相同的意思
+        //    return false;
+        //}
 
         public void Configure()
         {
+            if(!_regionManager.Regions.ContainsRegionWithName("BlogsListView"))
+                _regionManager.RequestNavigate(RegionNames.ContentRegion, "BlogsListView");
             UserEntity = AppSession.user;
             
         }

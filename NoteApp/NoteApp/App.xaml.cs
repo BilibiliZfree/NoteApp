@@ -38,6 +38,10 @@ namespace NoteApp
             return Container.Resolve<MainWindow>();
         }
 
+        /// <summary>
+        /// 注销当前用户
+        /// </summary>
+        /// <param name="containerProvider"></param>
         public static void LoginOut(IContainerProvider containerProvider)
         {
             Current.MainWindow.Hide();

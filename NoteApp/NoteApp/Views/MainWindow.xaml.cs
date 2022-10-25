@@ -15,12 +15,6 @@ namespace NoteApp.Views
             {
                 DragMove();
             };
-            //退出按钮
-            CloseButton.Click += (o, e) =>
-            {
-                if (MessageBox.Show("是否退出程序？", "", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
-                    Close();
-            };
         }
     }
 }

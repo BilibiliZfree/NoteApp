@@ -30,7 +30,7 @@ namespace NoteApp.Modules.ModuleName
         public void OnInitialized(IContainerProvider containerProvider)
         {
             //_regionManager.RequestNavigate(RegionNames.ContentRegion, "ViewB");
-            _regionManager.RequestNavigate(RegionNames.ContentRegion, "ViewD");
+            //_regionManager.RequestNavigate(RegionNames.ContentRegion, "ViewD");
             //_regionManager.RequestNavigate(RegionNames.ForgotRegion, "ViewC");
         }
         /// <summary>
@@ -46,6 +46,7 @@ namespace NoteApp.Modules.ModuleName
             containerRegistry.RegisterForNavigation<ViewB>();
             containerRegistry.RegisterForNavigation<ViewC>();
             containerRegistry.RegisterForNavigation<ViewD>();
+            containerRegistry.RegisterForNavigation<BlogsListView, BlogsListViewModel>();
             //弹窗
             containerRegistry.RegisterDialog<LoginView, LoginViewModel>();
             containerRegistry.RegisterDialog<RegisterView, RegisterViewModel>();
