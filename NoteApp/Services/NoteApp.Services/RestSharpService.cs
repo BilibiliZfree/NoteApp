@@ -7,6 +7,7 @@ using NoteApp.Models;
 using System.Threading.Tasks;
 using NoteApp.Services.Interfaces;
 using Newtonsoft.Json;
+using System.Collections.ObjectModel;
 
 namespace NoteApp.Services
 {
@@ -19,44 +20,44 @@ namespace NoteApp.Services
             => new RestClient(serviceUrl).Get(new RestRequest() { Method = method });
 
 
-        public ApiResponseR GetApiResponse(string serviceUrl, string id, string password)
+        public ApiResponseU GetApiResponse(string serviceUrl, string id, string password)
         {
             try
             {
                 var client = new RestClient(serviceUrl + $"?id={id}&password={password}");
                 RestRequest restRequest = new RestRequest();
                 RestResponse restResponse = client.Get(restRequest);
-                ApiResponseR apiResponse = JsonConvert.DeserializeObject<ApiResponseR>(restResponse.Content);
+                ApiResponseU apiResponse = JsonConvert.DeserializeObject<ApiResponseU>(restResponse.Content);
                 return apiResponse;
             }
             catch (Exception ex)
             {
 
-                return new ApiResponseR() { Message = ex.Message };
+                return new ApiResponseU() { Message = ex.Message };
             }
             
         }
 
-        public async Task<ApiResponseR> GetApiResponseAsync(string serviceUrl, string id, string password)
+        public async Task<ApiResponseU> GetApiResponseAsync(string serviceUrl, string id, string password)
         {
             try
             {
                 var client = new RestClient(serviceUrl + $"?id={id}&password={password}");
                 RestRequest restRequest = new RestRequest();
                 RestResponse restResponse = await client.GetAsync(restRequest);
-                ApiResponseR apiResponse = JsonConvert.DeserializeObject<ApiResponseR>(restResponse.Content);
+                ApiResponseU apiResponse = JsonConvert.DeserializeObject<ApiResponseU>(restResponse.Content);
                 return apiResponse;
             }
             catch (Exception ex)
             {
 
-                return new ApiResponseR() { Message = ex.Message };
+                return new ApiResponseU() { Message = ex.Message };
             }
         }
 
 
 
-        public ApiResponseR PostApiResponse(string serviceUrl, string username, string password,string telphone)
+        public ApiResponseU PostApiResponse(string serviceUrl, string username, string password,string telphone)
         {
             try
             {
@@ -73,12 +74,12 @@ namespace NoteApp.Services
                 RestRequest restRequest = new RestRequest();
                 restRequest.AddJsonBody(ue);
                 RestResponse restResponse = client.Post(restRequest);
-                ApiResponseR apiResponse = JsonConvert.DeserializeObject<ApiResponseR>(restResponse.Content);
+                ApiResponseU apiResponse = JsonConvert.DeserializeObject<ApiResponseU>(restResponse.Content);
                 return apiResponse;
             }
             catch (Exception ex)
             {
-                return new ApiResponseR() { Message = ex.Message };
+                return new ApiResponseU() { Message = ex.Message };
             }
            
         }
@@ -91,26 +92,53 @@ namespace NoteApp.Services
         /// <param name="oldPassword"></param>
         /// <param name="newPassword"></param>
         /// <returns></returns>
-        public ApiResponseR PutApiResponse(string serviceUrl, string username, string oldPassword, string newPassword)
+        public ApiResponseU PutApiResponse(string serviceUrl, string username, string oldPassword, string newPassword)
         {
             try
             {
                 var client = new RestClient(serviceUrl + $"?username={username}&oldPassword={oldPassword}&newPassword={newPassword}");
                 RestRequest restRequest = new RestRequest();
                 RestResponse restResponse = client.Post(restRequest);
-                ApiResponseR apiResponse = JsonConvert.DeserializeObject<ApiResponseR>(restResponse.Content);
+                ApiResponseU apiResponse = JsonConvert.DeserializeObject<ApiResponseU>(restResponse.Content);
                 return apiResponse;
             }
             catch (Exception ex)
             {
 
-                return new ApiResponseR() { Message = ex.Message };
+                return new ApiResponseU() { Message = ex.Message };
             }
-
-
-            return new ApiResponseR();
         }
 
+        public async Task<ApiResponseB> GetAllBlogsAsync(string serviceUrl,string arg)
+        {
+            try
+            {
+                var client = new RestClient(serviceUrl + $"?arg={arg}");
+                RestRequest restRequest = new RestRequest();
+                RestResponse restResponse = await client.GetAsync(restRequest);
+                ApiResponseB apiResponse = JsonConvert.DeserializeObject<ApiResponseB>(restResponse.Content);
+                return apiResponse;
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponseB() { Message = ex.Message };
+            }
+        }
 
+        public async Task<ApiResponseB> GetMyBlogsAsync(string serviceUrl, int userId)
+        {
+            try
+            {
+                var client = new RestClient(serviceUrl + $"?id={userId}");
+                RestRequest restRequest = new RestRequest();
+                RestResponse restResponse = await client.GetAsync(restRequest);
+                ApiResponseB apiResponse = JsonConvert.DeserializeObject<ApiResponseB>(restResponse.Content);
+                return apiResponse;
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponseB() { Message = ex.Message };
+            }
+        }
     }
 }

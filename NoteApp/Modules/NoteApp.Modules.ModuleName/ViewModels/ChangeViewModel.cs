@@ -213,7 +213,7 @@ namespace NoteApp.Modules.ModuleName.ViewModels
             }
             else
             {
-                ApiResponseR apiResponse = _restSharpService.PutApiResponse(WebApiUrl.ChangeUserUrl,UserName,OldPassword,NewPassword);
+                ApiResponseU apiResponse = _restSharpService.PutApiResponse(WebApiUrl.ChangeUserUrl,UserName,OldPassword,NewPassword);
                 Message = apiResponse.Message;
                 if (!apiResponse.Status)
                     return;

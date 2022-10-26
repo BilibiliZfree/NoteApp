@@ -21,7 +21,7 @@
             HorizontalAlignment="Center"
             DockPanel.Dock="Top"
             Orientation="Horizontal">
-            <TextBlock FontSize="36" Text="用户ID" />
+            <TextBlock FontSize="36" Text="{Binding UserEntity.UserName}" />
             <TextBlock FontSize="36" Text="" />
         </StackPanel>
         <StackPanel

@@ -13,8 +13,8 @@ namespace NoteApp.Modules.ModuleName.ViewModels
 {
     public class ViewCViewModel : RegionViewModelBase, IDialogAware
     {
-        //public ViewCViewModel(IRegionManager regionManager) :
-        //    base(regionManager)
+        //public ViewCViewModel(IRegionManager _regionManager) :
+        //    base(_regionManager)
         //{
 
         //}

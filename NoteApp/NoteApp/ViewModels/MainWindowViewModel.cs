@@ -1,12 +1,15 @@
-﻿using NoteApp.Core;
+﻿using ImTools;
+using NoteApp.Core;
 using NoteApp.Core.Mvvm;
 using NoteApp.Models;
+using NoteApp.Modules.ModuleName.Views;
 using NoteApp.Services.Interfaces;
 using Prism.Commands;
 using Prism.Ioc;
 using Prism.Mvvm;
 using Prism.Regions;
 using System;
+using System.Linq;
 using System.Net;
 using System.Windows;
 
@@ -19,6 +22,10 @@ namespace NoteApp.ViewModels
         private readonly IContainerProvider _containerProvider;
 
         private readonly IRegionManager _regionManager;
+        /// <summary>
+        /// 区域导航日志
+        /// </summary>
+        private IRegionNavigationJournal _navigationJournal;
 
         public DelegateCommand<string> DelegateCommands { get; private set; }
 
@@ -32,8 +39,8 @@ namespace NoteApp.ViewModels
         public bool IsLeftDrawerOpen
         {
             get { return _isLeftDrawerOpen; }
-            set 
-            { 
+            set
+            {
                 _isLeftDrawerOpen = value;
                 RaisePropertyChanged();
             }
@@ -49,7 +56,9 @@ namespace NoteApp.ViewModels
         }
 
         private UserEntity _userEntity;
-
+        /// <summary>
+        /// 用户信息临时储存
+        /// </summary>
         public UserEntity UserEntity
         {
             get { return _userEntity; }
@@ -82,6 +91,28 @@ namespace NoteApp.ViewModels
         {
             switch (arg)
             {
+                case "HomePageView":
+                    PageShow(arg);
+                    break;
+                case "ViewB":
+                    PageShow(arg);
+                    break;
+                case "ViewC":
+                    PageShow(arg);
+                    break;
+                case "BlogsListView":
+                    PageShow(arg);
+                    break;
+                case "ClearPages":
+                    ClearPages();
+                    PageShow("HomePageView");
+                    break;
+                case "PageBack":
+                    PageBack();
+                    break;
+                case "PageForward":
+                    PageForward();
+                    break;
                 case "LoginOut":
                     LoginOut();
                     break;
@@ -93,14 +124,69 @@ namespace NoteApp.ViewModels
             }
         }
 
-        private void LoginOut()
+
+
+
+        /// <summary>
+        /// 加载页面
+        /// </summary>
+        /// <param name="args"></param>
+        private void PageShow(string args)
         {
-            App.LoginOut(_containerProvider);
+            if (args == "BlogsListView")
+            {
+                IsLeftDrawerOpen = !IsLeftDrawerOpen; ;
+            }
+            _regionManager.RequestNavigate(RegionNames.ContentRegion, args, navigationCallback =>
+            {
+                //判断是否有值
+                if ((bool)navigationCallback.Result)
+                {
+                    //将记录写进导航日志
+                    _navigationJournal = navigationCallback.Context.NavigationService.Journal;
+                }
+            });
         }
 
-        private void Exit()
+        /// <summary>
+        /// 清理所有页面
+        /// </summary>
+        private void ClearPages()
         {
-            if (MessageBox.Show("确认退出应用？","请选择",MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            var result = _regionManager.Regions.GetEnumerator();
+            if (result.MoveNext())
+            {
+                result.Current.RemoveAll();
+            }
+        }
+
+        private void PageBack()
+        {
+            if (_navigationJournal.CanGoBack)
+            {
+                _navigationJournal.GoBack();
+            }
+
+        }
+
+        private void PageForward()
+        {
+            if (_navigationJournal.CanGoForward)
+            {
+                _navigationJournal.GoForward();
+            }
+        }
+
+        /// <summary>
+        /// 登出账号
+        /// </summary>
+        private void LoginOut() => App.LoginOut(_containerProvider);
+        /// <summary>
+        /// 退出应用
+        /// </summary>
+        private static void Exit()
+        {
+            if (MessageBox.Show("确认退出应用？", "请选择", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
                 App.Current.MainWindow.Close();
             }
@@ -113,24 +199,20 @@ namespace NoteApp.ViewModels
         private void Navigate(string navigatePath)
         {
             if (navigatePath != null)
-                _regionManager.RequestNavigate(RegionNames.ContentRegion, navigatePath);
+                _regionManager.RequestNavigate(RegionNames.ContentRegion, navigatePath, navigationCallback =>
+                {
+                    if ((bool)navigationCallback.Result)
+                    {
+                        _navigationJournal = navigationCallback.Context.NavigationService.Journal;
+                    }
+                });
         }
-
-        //public override bool IsNavigationTarget(NavigationContext navigationContext)
-        //{
-        //    // 当切换到本界面时：
-        //    // 当返回True的时候，返回容器里面的view
-        //    // 当返回 False的时候，返回一个新的view
-        //    // 和 KeepAlive时相同的意思
-        //    return false;
-        //}
 
         public void Configure()
         {
-            if(!_regionManager.Regions.ContainsRegionWithName("BlogsListView"))
-                _regionManager.RequestNavigate(RegionNames.ContentRegion, "BlogsListView");
+            ClearPages();
             UserEntity = AppSession.user;
-            
+            PageShow("HomePageView");
         }
     }
 }

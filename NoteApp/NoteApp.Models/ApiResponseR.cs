@@ -4,7 +4,10 @@ using System.Text;
 
 namespace NoteApp.Models
 {
-    public class ApiResponseR
+    /// <summary>
+    /// 响应用户信息返回体
+    /// </summary>
+    public class ApiResponseU
     {
         //Content = "{
         //              \"message\":\"登录成功\",

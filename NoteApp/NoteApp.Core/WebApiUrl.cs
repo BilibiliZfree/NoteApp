@@ -20,5 +20,18 @@ namespace NoteApp.Core
         /// 修改用户链接
         /// </summary>
         public const string ChangeUserUrl = "https://localhost:7082/api/Users/ChangePasswordByUserName";
+        /// <summary>
+        /// 获取所有博客链接
+        /// </summary>
+        public const string GetAllBlogsUrl = "https://localhost:7082/api/Blogs/GetAllBlogs";
+        public const string GetAllBlogs = "GetAllBlogs";
+        public const string GetBlogsSortByCreateTimeAsc = "GetBlogsSortByCreateTimeAsc";
+        public const string GetBlogsSortByCreateTimeDesc = "GetBlogsSortByCreateTimeDesc";
+        public const string GetBlogsSortByUpdateTimeAsc = "GetBlogsSortByUpdateTimeAsc";
+        public const string GetBlogsSortByUpdateTimeDesc = "GetBlogsSortByUpdateTimeDesc";
+        /// <summary>
+        /// 获取个人博客链接
+        /// </summary>
+        public const string GetMyBlogsUrl = "https://localhost:7082/api/Blogs/GetMyBlogs";
     }
 }

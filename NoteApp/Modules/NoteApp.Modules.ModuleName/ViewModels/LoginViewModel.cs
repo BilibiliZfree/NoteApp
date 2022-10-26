@@ -205,7 +205,7 @@ namespace NoteApp.Modules.ModuleName.ViewModels
                 return;
             }
             ChangeVisibility();
-            ApiResponseR apiResponse =await _restSharpService.GetApiResponseAsync(WebApiUrl.LoginUserByIdUrl, userId, Password);
+            ApiResponseU apiResponse =await _restSharpService.GetApiResponseAsync(WebApiUrl.LoginUserByIdUrl, userId, Password);
 
             if(!apiResponse.Status)
             {

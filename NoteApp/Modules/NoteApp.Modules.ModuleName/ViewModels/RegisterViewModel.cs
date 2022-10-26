@@ -215,7 +215,7 @@ namespace NoteApp.Modules.ModuleName.ViewModels
             }
             else
             {
-                ApiResponseR apiResponse = _restSharpService.PostApiResponse(WebApiUrl.RegisterUserUrl, UserName,Password,Telphone);
+                ApiResponseU apiResponse = _restSharpService.PostApiResponse(WebApiUrl.RegisterUserUrl, UserName,Password,Telphone);
                 Message = apiResponse.Message;
                 if (!apiResponse.Status)                    
                     return;

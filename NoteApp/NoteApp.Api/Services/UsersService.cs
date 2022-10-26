@@ -159,5 +159,10 @@ namespace NoteApp.Api.Services
         {
             return new CryptogramService().HashSHA256(s);
         }
+
+        public Task<ApiResponse> GetsResponseAsync(string arg)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

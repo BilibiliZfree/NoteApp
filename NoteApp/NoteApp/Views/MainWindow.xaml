@@ -27,13 +27,22 @@
                 <DockPanel LastChildFill="True">
                     <StackPanel Orientation="Horizontal">
                         <ToggleButton IsChecked="{Binding IsLeftDrawerOpen}" Style="{DynamicResource MaterialDesignHamburgerToggleButton}" />
-                        <Button Style="{DynamicResource MaterialDesignIconForegroundButton}">
+                        <Button
+                            Command="{Binding DelegateCommands}"
+                            CommandParameter="HomePageView"
+                            Style="{DynamicResource MaterialDesignIconForegroundButton}">
                             <materialDesign:PackIcon Kind="Home" />
                         </Button>
-                        <Button Style="{DynamicResource MaterialDesignIconForegroundButton}">
+                        <Button
+                            Command="{Binding DelegateCommands}"
+                            CommandParameter="PageBack"
+                            Style="{DynamicResource MaterialDesignIconForegroundButton}">
                             <materialDesign:PackIcon Kind="ArrowBack" />
                         </Button>
-                        <Button Style="{DynamicResource MaterialDesignIconForegroundButton}">
+                        <Button
+                            Command="{Binding DelegateCommands}"
+                            CommandParameter="PageForward"
+                            Style="{DynamicResource MaterialDesignIconForegroundButton}">
                             <materialDesign:PackIcon Kind="ArrowForward" />
                         </Button>
                         <Button Style="{DynamicResource MaterialDesignIconForegroundButton}">
@@ -73,16 +82,19 @@
                                 Content="退出应用"
                                 Style="{DynamicResource MaterialDesignFlatButton}" />
                             <Button
-                                x:Name="TestButton"
-                                Command="{Binding NavigateCommand}"
-                                CommandParameter="ViewB"
-                                Content="测试页面"
+                                Command="{Binding DelegateCommands}"
+                                CommandParameter="ClearPages"
+                                Content="清理页面"
                                 Style="{DynamicResource MaterialDesignFlatButton}" />
                             <Button
-                                x:Name="TestButton2"
-                                Command="{Binding NavigateCommand}"
+                                Command="{Binding DelegateCommands}"
+                                CommandParameter="ViewB"
+                                Content="打开ViewB"
+                                Style="{DynamicResource MaterialDesignFlatButton}" />
+                            <Button
+                                Command="{Binding DelegateCommands}"
                                 CommandParameter="ViewC"
-                                Content="测试页面2"
+                                Content="打开ViewC"
                                 Style="{DynamicResource MaterialDesignFlatButton}" />
                         </StackPanel>
                     </materialDesign:PopupBox>
@@ -103,12 +115,13 @@
                                 VerticalAlignment="Center"
                                 materialDesign:HintAssist.Hint="查询博客……"
                                 materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
-                                BorderThickness="0" />
+                                BorderThickness="0"
+                                FontSize="18" />
                             <Button
                                 Grid.Column="1"
-                                Margin="10,0,0,0"
-                                Style="{DynamicResource MaterialDesignToolButton}">
-                                <materialDesign:PackIcon Kind="Search" Opacity=".56" />
+                                Margin="10,0,10,0"
+                                Style="{DynamicResource MaterialDesignIconForegroundButton}">
+                                <materialDesign:PackIcon Kind="Search" />
                             </Button>
                         </Grid>
                     </Border>
@@ -142,11 +155,34 @@
                                     RadiusY="50" />
                             </Image.Clip>
                         </Image>
-                        <TextBlock
+                        <Grid
+                            Margin="10"
                             HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            FontSize="24"
-                            Text="{Binding UserEntity.UserName}" />
+                            VerticalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock
+                                Grid.Column="0"
+                                VerticalAlignment="Center"
+                                FontSize="24"
+                                Text="欢迎，" />
+                            <TextBlock
+                                Grid.Column="1"
+                                VerticalAlignment="Center"
+                                FontSize="24"
+                                Foreground="CadetBlue"
+                                Text="{Binding UserEntity.UserName}" />
+                        </Grid>
+
+                        <Button
+                            Height="36"
+                            Margin="10,5"
+                            Command="{Binding DelegateCommands}"
+                            CommandParameter="BlogsListView"
+                            Content="博客列表"
+                            FontSize="24" />
                     </StackPanel>
                 </materialDesign:DrawerHost.LeftDrawerContent>
                 <ContentControl prism:RegionManager.RegionName="{x:Static core:RegionNames.ContentRegion}" />

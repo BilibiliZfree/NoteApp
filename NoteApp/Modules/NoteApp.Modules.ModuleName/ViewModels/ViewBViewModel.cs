@@ -1,4 +1,6 @@
-﻿using NoteApp.Core.Mvvm;
+﻿using NoteApp.Core;
+using NoteApp.Core.Mvvm;
+using NoteApp.Models;
 using Prism.Commands;
 using Prism.Regions;
 using Prism.Services.Dialogs;
@@ -10,9 +12,17 @@ using System.Threading.Tasks;
 
 namespace NoteApp.Modules.ModuleName.ViewModels
 {
-    internal class ViewBViewModel : RegionViewModelBase, IDialogAware
+    internal class ViewBViewModel : RegionViewModelBase, IDialogAware, IRegionMemberLifetime
     {
         private readonly IRegionManager regionManager;
+
+        public bool KeepAlive
+        {
+            get
+            {
+                return false;
+            }
+        }
 
         private string updateTime;
 
@@ -20,6 +30,14 @@ namespace NoteApp.Modules.ModuleName.ViewModels
         {
             get { return updateTime; }
             set { SetProperty(ref updateTime, value); }
+        }
+
+        private UserEntity _userEntity;
+
+        public UserEntity UserEntity
+        {
+            get { return _userEntity; }
+            set { _userEntity = value; RaisePropertyChanged(); }
         }
 
 
@@ -31,6 +49,7 @@ namespace NoteApp.Modules.ModuleName.ViewModels
 
         private void Update()
         {
+            UserEntity = AppSession.user;
             UpdateTime = $"{DateTime.Now}";
         }
 

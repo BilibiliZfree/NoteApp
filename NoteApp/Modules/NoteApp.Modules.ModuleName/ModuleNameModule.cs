@@ -46,6 +46,7 @@ namespace NoteApp.Modules.ModuleName
             containerRegistry.RegisterForNavigation<ViewB>();
             containerRegistry.RegisterForNavigation<ViewC>();
             containerRegistry.RegisterForNavigation<ViewD>();
+            containerRegistry.RegisterForNavigation<HomePageView, HomePageViewModel>();
             containerRegistry.RegisterForNavigation<BlogsListView, BlogsListViewModel>();
             //弹窗
             containerRegistry.RegisterDialog<LoginView, LoginViewModel>();

@@ -16,20 +16,28 @@ namespace NoteApp.Api.Controllers
         {
             _service = service;
         }
-
         // GET: api/Blogs/GetBlogs
         [HttpGet]
         [Tags("笔记管理")]
-        public async Task<ApiResponse> GetBlogsAsync()
+        public async Task<ApiResponse> GetAllBlogsAsync(string arg)
         {
-            return await _service.GetsResponseAsync();
+            return await _service.GetsResponseAsync(arg);
         }
+
         // Get api/Blogs/GetBlog
         [HttpGet]
         [Tags("笔记管理")]
         public async Task<ApiResponse> GetBlogAsync(int id)
         {
             return await _service.GetResponseAsync(id);
+        }
+
+        //Get api/Blogs/GetMyBlogs
+        [HttpGet]
+        [Tags("笔记管理")]
+        public async Task<ApiResponse> GetMyBlogsAsync(int id)
+        {
+            return await _service.GetMyBlogsResponseAsync(id);
         }
 
         // Post api/Blogs/PostBlog
