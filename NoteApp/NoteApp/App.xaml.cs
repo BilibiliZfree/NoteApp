@@ -1,12 +1,9 @@
-﻿using Microsoft.AspNetCore.Session;
-using NoteApp.Core;
+﻿using NoteApp.Core;
 using NoteApp.Core.RegionAdapter;
 using NoteApp.Models;
 using NoteApp.Modules.ModuleName;
-using NoteApp.Modules.ModuleName.Views;
 using NoteApp.Services;
 using NoteApp.Services.Interfaces;
-using NoteApp.ViewModels;
 using NoteApp.Views;
 using Prism.DryIoc;
 using Prism.Ioc;
@@ -14,8 +11,6 @@ using Prism.Modularity;
 using Prism.Regions;
 using Prism.Services.Dialogs;
 using System;
-using System.Net;
-using System.Reflection.Metadata;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -33,8 +28,6 @@ namespace NoteApp
         /// <returns></returns>
         protected override Window CreateShell()
         {
-            //return Container.Resolve<LoginWindow>();
-            //return Container.Resolve<MainWindow>();
             return Container.Resolve<MainWindow>();
         }
 
@@ -55,7 +48,7 @@ namespace NoteApp
                     Environment.Exit(0);
                     return;
                 }
-                AppSession.session( callback.Parameters.GetValue<UserEntity>("loginResult") );
+                AppSession.session( callback.Parameters.GetValue<UserEntity>("user") );
 
             });
             var server = Current.MainWindow.DataContext as IConfigureService;
@@ -75,7 +68,7 @@ namespace NoteApp
                     Environment.Exit(0);
                     return;
                 }
-                AppSession.session(callback.Parameters.GetValue<UserEntity>("loginResult"));
+                AppSession.session(callback.Parameters.GetValue<UserEntity>("user"));
 
             });
             var server = Current.MainWindow.DataContext as IConfigureService;
@@ -92,8 +85,8 @@ namespace NoteApp
         /// <param name="containerRegistry">注册容器</param>
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            containerRegistry.RegisterSingleton<IMessageService, MessageService>();
-            containerRegistry.RegisterSingleton<IRestSharpService, RestSharpService>();
+            //containerRegistry.RegisterSingleton<IMessageService, MessageService>();
+            containerRegistry.RegisterSingleton<IRestSharpServerBase<ApiResponse, UserEntity>, UserServer>();
             //containerRegistry.RegisterDialogWindow<ShowDialogWindow>("ShowDialogWindow");
 
         }

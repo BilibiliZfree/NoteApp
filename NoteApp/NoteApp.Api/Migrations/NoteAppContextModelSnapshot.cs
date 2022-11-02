@@ -15,12 +15,21 @@ namespace NoteApp.Api.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "6.0.6");
+            modelBuilder.HasAnnotation("ProductVersion", "6.0.8");
 
             modelBuilder.Entity("NoteApp.Models.BlogEntity", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Classification")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Collections")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("Comment_Status")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Context")
@@ -29,20 +38,110 @@ namespace NoteApp.Api.Migrations
                     b.Property<DateTime>("CreateTime")
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("Hits")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Likes")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("PictrueLink")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Title")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("UpdateTime")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("UserEntityID")
+                    b.HasKey("ID");
+
+                    b.ToTable("Blogs");
+                });
+
+            modelBuilder.Entity("NoteApp.Models.BlogsRelation", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("BlogID")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("UserID")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("ID");
 
-                    b.HasIndex("UserEntityID");
+                    b.ToTable("BlogsRelations");
+                });
 
-                    b.ToTable("Blogs");
+            modelBuilder.Entity("NoteApp.Models.CollectionRelation", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("BlogID")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CollectionTime")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("UserID")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Collections");
+                });
+
+            modelBuilder.Entity("NoteApp.Models.CommentEntity", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("BlogID")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Comment")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("CommentID")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreateTime")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("UpdateTime")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("UserID")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Comments");
+                });
+
+            modelBuilder.Entity("NoteApp.Models.FollowRelation", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("FollowID")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("FollowTime")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("UserID")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Follows");
                 });
 
             modelBuilder.Entity("NoteApp.Models.UserEntity", b =>
@@ -51,7 +150,22 @@ namespace NoteApp.Api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Avatar")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("Birthday")
+                        .HasColumnType("Date");
+
                     b.Property<DateTime>("CreateTime")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Fans")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Follows")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Mail")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Password")
@@ -69,20 +183,6 @@ namespace NoteApp.Api.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("NoteApp.Models.BlogEntity", b =>
-                {
-                    b.HasOne("NoteApp.Models.UserEntity", null)
-                        .WithMany("Blogs")
-                        .HasForeignKey("UserEntityID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("NoteApp.Models.UserEntity", b =>
-                {
-                    b.Navigation("Blogs");
                 });
 #pragma warning restore 612, 618
         }

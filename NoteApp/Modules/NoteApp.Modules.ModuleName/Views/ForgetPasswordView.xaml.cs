@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace NoteApp.Modules.ModuleName.Views
 {
     /// <summary>
-    /// ChangeView.xaml 的交互逻辑
+    /// ForgetPasswordView.xaml 的交互逻辑
     /// </summary>
-    public partial class ChangeView : UserControl
+    public partial class ForgetPasswordView : UserControl
     {
-        public ChangeView()
+        public ForgetPasswordView()
         {
             InitializeComponent();
         }

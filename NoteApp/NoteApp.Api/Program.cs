@@ -13,8 +13,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 // 添加Service
-builder.Services.AddTransient<UsersService>();
-builder.Services.AddTransient<BlogsService>();
+builder.Services.AddTransient<UserService>();
+builder.Services.AddTransient<BlogService>();
+builder.Services.AddTransient<BlogsRelationService>();
 // 定义数据库地址
 builder.Services.AddSqlite<NoteAppContext>("Data Source=Databases/NoteDatabase.db");
 //builder.Services.AddSqlite<NoteAppContext>("Data Source=Databases/NoteDatabaseTest.db");

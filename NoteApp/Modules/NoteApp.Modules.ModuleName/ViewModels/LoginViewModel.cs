@@ -1,15 +1,17 @@
-﻿using NoteApp.Core;
+﻿using Newtonsoft.Json;
 using NoteApp.Core.Mvvm;
 using NoteApp.Models;
-using NoteApp.Services;
 using NoteApp.Services.Interfaces;
 using Prism.Commands;
 using Prism.Regions;
 using Prism.Services.Dialogs;
 using System;
-using System.Net;
-using System.Threading;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Xml.Serialization;
 
 namespace NoteApp.Modules.ModuleName.ViewModels
 {
@@ -17,47 +19,38 @@ namespace NoteApp.Modules.ModuleName.ViewModels
     {
         #region 字段
 
-        private readonly IRegionManager regionManager;
+        private readonly IDialogService _dialogService;
 
-        private readonly IRestSharpService _restSharpService;
+        private readonly IRegionManager _regionManager;
 
-        public string Title => "登录页面";
+        private readonly IRestSharpServerBase<ApiResponse, UserEntity> _userService;
 
         public event Action<IDialogResult> RequestClose;
 
-        private bool _IsFlipped;
+        private string _Account;
 
-        private bool _isEnabled = false;
+        public string Title => "登录界面";
 
-        private string _message;
+        private bool _IsFlipped = false;
 
-        private IDialogService dialogService;
+        private string _Message;
 
-        /// <summary>
-        /// 翻转界面
-        /// </summary>
-        public DelegateCommand FlippingCommand { get; set; }
+        private string _Password;
 
-        public DelegateCommand<string> ShowDialogCommand { get; private set; }
-        /// <summary>
-        /// 登录命令
-        /// </summary>
-        public DelegateCommand LoginCommand { get; set; }
-
-        /// <summary>
-        /// 选择数据库文件路径
-        /// </summary>
-        public DelegateCommand DbDelegateCommand { get; private set; }
-
-        public DelegateCommand CloseCommand { get; private set; }
+        private string _Visibility = "Hidden";
 
         #endregion
 
         #region 属性
 
+        public string Account
+        {
+            get { return _Account; }
+            set { SetProperty(ref _Account, value); }
+        }
 
         /// <summary>
-        /// materialDesign:Flipper的翻转属性
+        /// materialDesign:Flipper的翻转标志
         /// </summary>
         public bool IsFlipped
         {
@@ -65,168 +58,48 @@ namespace NoteApp.Modules.ModuleName.ViewModels
             set { SetProperty(ref _IsFlipped, value); }
         }
 
-
-        /// <summary>
-        /// 按钮可用属性
-        /// </summary>
-        public bool IsEnabled
-        {
-            get
-            {
-                return _isEnabled;
-            }
-            set
-            {
-                SetProperty(ref _isEnabled, value);
-                DbDelegateCommand.RaiseCanExecuteChanged();
-            }
-        }
-
-        private string _visibility;
-        /// <summary>
-        /// 进度条显示属性
-        /// </summary>
-        public string Visibility
-        {
-            get { return _visibility; }
-            set { SetProperty(ref _visibility, value); }
-        }
-
-
         /// <summary>
         /// 提示信息
         /// </summary>
         public string Message
         {
-            get { return _message; }
-            set { SetProperty(ref _message, value); }
+            get { return _Message; }
+            set { SetProperty(ref _Message, value); }
         }
 
-        private string userId;
-        /// <summary>
-        /// 用户名
-        /// </summary>
-        public string UserId
-        {
-            get { return userId; }
-            set { userId = value; RaisePropertyChanged(); }
-        }
-
-        private string password;
-        /// <summary>
-        /// 密码
-        /// </summary>
         public string Password
         {
-            get { return password; }
-            set { password = value; RaisePropertyChanged(); }
+            get { return _Password; }
+            set { SetProperty(ref _Password, value); }
         }
 
+        /// <summary>
+        /// 进度条显示属性
+        /// </summary>
+        public string Visibility
+        {
+            get { return _Visibility; }
+            set { SetProperty(ref _Visibility, value); }
+        }
 
         #endregion
 
+        #region 命令
 
-        #region 方法
+        public DelegateCommand<string> DelegateCommand { get; set; }
 
-        public LoginViewModel(IRegionManager regionManager, IDialogService dialogService, IRestSharpService restSharpService) : base(regionManager)
+        #endregion
+
+        #region 函数
+
+        public LoginViewModel(IDialogService dialogService, IRegionManager regionManager, IRestSharpServerBase<ApiResponse, UserEntity> userService) : base(regionManager)
         {
-            this.regionManager = regionManager;
-
-            _restSharpService = restSharpService;
-
-            FlippingCommand = new DelegateCommand(Flipping);
-
-            ShowDialogCommand = new DelegateCommand<string>(ShowDialog);
-
-            LoginCommand = new DelegateCommand(Login);
-
-            DbDelegateCommand = new DelegateCommand(Execute, CanExecute);
-
-            CloseCommand = new DelegateCommand(Close);
-
-            this.dialogService = dialogService;
-            //this.loginService = loginService;
-            ChangeVisibility();
+            _dialogService = dialogService;
+            _regionManager = regionManager;
+            _userService = userService;
+            DelegateCommand = new DelegateCommand<string>(DelegateMethod);
         }
 
-        private void Close()
-        {
-            RequestClose?.Invoke(new DialogResult(ButtonResult.No));
-        }
-
-        /// <summary>
-        /// 界面翻转逻辑
-        /// </summary>
-        private void Flipping() => IsFlipped = !IsFlipped;
-
-        /// <summary>
-        /// 弹窗逻辑
-        /// </summary>
-        /// <param name="viewName">区域名</param>
-        private void ShowDialog(string navigatePath)
-        {
-            DialogParameters param = new DialogParameters();
-            // View的注册名称 - 参数键值对 - 弹窗回调 - 指定弹出窗口的注册名称
-            dialogService.ShowDialog(navigatePath, param,
-                (result) =>
-                {
-                    var diaResult = result.Parameters;
-                    MessageBox.Show(diaResult.GetValue<string>("dia"));
-                });
-            /**
-            if (navigatePath != null)
-            {
-                switch (navigatePath)
-                {
-                    case "ViewA":
-                        new DialogWindow() { Content = new ViewA() }.ShowDialog();
-                        break;
-                    case "ViewB":
-                        new DialogWindow() { Content = new ViewB() }.ShowDialog();
-                        break;
-                    case "ViewC":
-                        new DialogWindow() { Content = new ViewC() }.ShowDialog();
-                        break;
-                    default:
-                        break;
-                }
-            }
-            */
-        }
-
-        /// <summary>
-        /// 登录逻辑
-        /// </summary>
-        private async void Login()
-        {
-            if(string.IsNullOrWhiteSpace(userId) || string.IsNullOrWhiteSpace(Password))
-            {
-                Message = "用户名和密码不能为空";
-                return;
-            }
-            ChangeVisibility();
-            ApiResponseU apiResponse =await _restSharpService.GetApiResponseAsync(WebApiUrl.LoginUserByIdUrl, userId, Password);
-
-            if(!apiResponse.Status)
-            {
-                Message = apiResponse.Message;
-                ChangeVisibility();
-                return;
-            }
-            DialogParameters keyValues = new DialogParameters();
-            keyValues.Add("loginResult",apiResponse.Object);
-            RequestClose?.Invoke(new DialogResult(ButtonResult.OK,keyValues));
-        }
-
-        private void Execute()
-        {
-            Message = $"Updated: {DateTime.Now}";
-        }
-
-        private bool CanExecute()
-        {
-            return IsEnabled;
-        }
 
 
         public bool CanCloseDialog()
@@ -234,31 +107,114 @@ namespace NoteApp.Modules.ModuleName.ViewModels
             return true;
         }
 
-        public void OnDialogClosed()
+        private void Close()
+        {
+            if (MessageBox.Show($"确认退出{Title}？", "请选择", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                RequestClose?.Invoke(new DialogResult(ButtonResult.No));
+        }
+
+        private void DelegateMethod(string arg)
         {
 
+            switch(arg)
+            {
+                case "Close":
+                    Close();
+                    return;
+                case "Flip":
+                    Flipping();
+                    return;
+                case "Login":
+                    Login();
+                    break;
+                case "RegisterView":
+                    ShowDialog(arg);
+                    return;
+                case "ChangePasswordView":
+                    ShowDialog(arg);
+                    return;
+                case "Visible":
+                    IsVisible();
+                    return;
+                default:
+                    break;
+            }
+        }
+
+        public void Flipping() => IsFlipped = !IsFlipped;
+
+        public void IsVisible() => Visibility = Visibility.Equals("Hidden") ? "Visible" : "Hidden";
+
+        private async void Login()
+        {
+            try
+            {
+                
+                if (string.IsNullOrWhiteSpace(Account))
+                {
+                    throw new Exception("账号不能为空.");
+                }
+                if (string.IsNullOrWhiteSpace(Password))
+                {
+                    throw new Exception("密码不能为空.");
+                }
+                //id = int.Parse(Account);
+                IsVisible();
+                ApiResponse response1 = await _userService.LoginAsync(Account, Password);
+                if (response1.Status)
+                {
+                    
+                    var js = JsonConvert.SerializeObject(response1.Object);
+                    UserEntity user = JsonConvert.DeserializeObject<UserEntity>(js);
+                    DialogParameters keyValues = new DialogParameters();
+                    keyValues.Add("user", user);
+                    RequestClose?.Invoke(new DialogResult(ButtonResult.OK, keyValues));
+                }
+                ApiResponse response2 = await _userService.LoginAsync(int.Parse(Account), Password);
+                if (response2.Status)
+                {
+                    var js = JsonConvert.SerializeObject(response2.Object);
+                    UserEntity user = JsonConvert.DeserializeObject<UserEntity>(js);
+                    DialogParameters keyValues = new DialogParameters();
+                    keyValues.Add("user", user);
+                    RequestClose?.Invoke(new DialogResult(ButtonResult.OK, keyValues));
+                }
+                IsVisible();
+                Message = response1.Message + "\n\r" + response2.Message;
+
+
+            }
+            catch (Exception ex)
+            {
+
+                Message = $"LoginViewModel-Login-{ex.Message}";
+            }
+        }
+
+        public void OnDialogClosed()
+        {
+            
         }
 
         public void OnDialogOpened(IDialogParameters parameters)
         {
-
+            
         }
 
-        public void ChangeVisibility()
+        public void ShowDialog(string name)
         {
-            if(Visibility == null)
-            {
-                Visibility = "Hidden";
-                return;
-            }
-            if (Visibility.Equals("Hidden"))
-            {
-                Visibility = "Visible";
-                return;
-            }
-            Visibility = "Hidden";
+            //传入参数
+            var keyValues = new DialogParameters();
+            _dialogService.ShowDialog(name, keyValues,
+                (callback) => 
+                {
+                    //获取对话返回的数据
+                    var result = callback.Parameters;
+                    Message = result.GetValue<string>("ReturnValue");
+                });
         }
 
         #endregion
+
     }
 }

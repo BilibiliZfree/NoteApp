@@ -1,14 +1,14 @@
-﻿using System;
+﻿using NoteApp.Core.Mvvm;
+using Prism.Regions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using NoteApp.Core.Mvvm;
-using Prism.Regions;
 
 namespace NoteApp.Modules.ModuleName.ViewModels
 {
-    internal class HomePageViewModel : RegionViewModelBase, IRegionMemberLifetime
+    public class HomePageViewModel : RegionViewModelBase, IRegionMemberLifetime
     {
         #region 字段
 
@@ -18,13 +18,7 @@ namespace NoteApp.Modules.ModuleName.ViewModels
 
         #region 属性
 
-        public bool KeepAlive
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public bool KeepAlive => false;
 
         #endregion
 

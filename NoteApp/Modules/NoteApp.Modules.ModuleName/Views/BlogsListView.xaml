@@ -4,7 +4,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-    xmlns:local="clr-namespace:NoteApp.Modules.ModuleName.ViewModels"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
@@ -30,7 +29,7 @@
                 Style="{StaticResource MaterialDesignOutlinedComboBox}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
-                        <i:InvokeCommandAction Command="{Binding SelectChangedCommandA}" CommandParameter="{Binding ElementName=GetAllOrMyBlogs, Path=SelectedIndex}" />
+                        <i:InvokeCommandAction Command="{Binding}" CommandParameter="{Binding}" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
                 <ComboBoxItem Content="全部" />
@@ -54,7 +53,7 @@
                 Style="{StaticResource MaterialDesignOutlinedComboBox}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
-                        <i:InvokeCommandAction Command="{Binding SelectChangedCommandC}" CommandParameter="{Binding ElementName=BlogsSortByTime, Path=SelectedIndex}" />
+                        <i:InvokeCommandAction Command="{Binding}" CommandParameter="{Binding}" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
                 <ComboBoxItem Content="默认" />
@@ -70,7 +69,7 @@
             ScrollViewer.VerticalScrollBarVisibility="Hidden"
             Style="{DynamicResource MaterialDesignScrollViewer}">
             <StackPanel MaxWidth="1260" AllowDrop="True">
-                <ItemsControl ItemsSource="{Binding AllBlogs, Mode=OneWay, NotifyOnSourceUpdated=True}">
+                <ItemsControl ItemsSource="{Binding}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <WrapPanel />
@@ -107,13 +106,13 @@
                                                 Margin="0,10"
                                                 HorizontalContentAlignment="Left"
                                                 BorderThickness="0,0,0,1"
-                                                Content="{Binding Title, Mode=OneWay, NotifyOnSourceUpdated=True}"
+                                                Content="{Binding}"
                                                 FontSize="36"
                                                 Style="{DynamicResource MaterialDesignOutlinedButton}" />
                                             <TextBlock
                                                 Grid.Row="1"
                                                 Width="940"
-                                                Text="{Binding Context, Mode=OneWay, NotifyOnSourceUpdated=True}"
+                                                Text="{Binding}"
                                                 TextTrimming="WordEllipsis"
                                                 TextWrapping="Wrap" />
                                             <StackPanel

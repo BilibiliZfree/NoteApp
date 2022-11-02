@@ -1,13 +1,8 @@
-﻿using NoteApp.Core;
-using NoteApp.Modules.ModuleName.ViewModels;
+﻿using NoteApp.Modules.ModuleName.ViewModels;
 using NoteApp.Modules.ModuleName.Views;
-using NoteApp.Services;
-using NoteApp.Services.Interfaces;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;
-using Prism.Services.Dialogs;
-using System.Windows.Controls;
 
 namespace NoteApp.Modules.ModuleName
 {
@@ -42,16 +37,26 @@ namespace NoteApp.Modules.ModuleName
             //注册对话框
             //服务
             //导航
-            containerRegistry.RegisterForNavigation<ViewA, ViewAViewModel>();
-            containerRegistry.RegisterForNavigation<ViewB>();
-            containerRegistry.RegisterForNavigation<ViewC>();
-            containerRegistry.RegisterForNavigation<ViewD>();
-            containerRegistry.RegisterForNavigation<HomePageView, HomePageViewModel>();
+            //containerRegistry.RegisterForNavigation<ViewA, ViewAViewModel>();
+            //containerRegistry.RegisterForNavigation<ViewB>();
+            //containerRegistry.RegisterForNavigation<ViewC>();
+            //containerRegistry.RegisterForNavigation<ViewD>();
             containerRegistry.RegisterForNavigation<BlogsListView, BlogsListViewModel>();
-            //弹窗
+            containerRegistry.RegisterForNavigation<HomePageView, HomePageViewModel>();
+            containerRegistry.RegisterForNavigation<WriteBlogView, WriteBlogViewModel>();
+            //----------对话----------
+            //注销账户
+            containerRegistry.RegisterDialog<AccountCancellationView, AccountCancellationViewModel>();
+            //修改密码
+            containerRegistry.RegisterDialog<ChangePasswordView, ChangePasswordViewModel>();
+            //忘记密码
+            containerRegistry.RegisterDialog<ForgetPasswordView, ForgetPasswordViewModel>();
+            //选择图片
+            containerRegistry.RegisterDialog<GetPictureView, GetPictureViewModel>();
+            //用户登录
             containerRegistry.RegisterDialog<LoginView, LoginViewModel>();
+            //用户注册
             containerRegistry.RegisterDialog<RegisterView, RegisterViewModel>();
-            containerRegistry.RegisterDialog<ChangeView, ChangeViewModel>();
 
         }
     }

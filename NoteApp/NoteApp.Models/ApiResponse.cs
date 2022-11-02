@@ -9,6 +9,10 @@ namespace NoteApp.Models
     /// </summary>
     public class ApiResponse
     {
+        public ApiResponse()
+        {
+        }
+
         public ApiResponse(string message, bool status = false)
         {
             Message = message;
@@ -35,6 +39,7 @@ namespace NoteApp.Models
         {
             Object = @object;
         }
+
 
         /// <summary>
         /// 提示信息

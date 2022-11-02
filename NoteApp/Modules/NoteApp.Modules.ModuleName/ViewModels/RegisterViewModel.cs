@@ -1,4 +1,4 @@
-﻿using NoteApp.Core;
+﻿using Newtonsoft.Json;
 using NoteApp.Core.Mvvm;
 using NoteApp.Models;
 using NoteApp.Services.Interfaces;
@@ -11,217 +11,208 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 
 namespace NoteApp.Modules.ModuleName.ViewModels
 {
-
     public class RegisterViewModel : RegionViewModelBase, IDialogAware
     {
 
         #region 字段
-        public string Title => "注册新用户";
-
-        
 
         private readonly IRegionManager _regionManager;
-        private readonly IRestSharpService _restSharpService;
 
+        private readonly IRestSharpServerBase<ApiResponse, UserEntity> _userService;
 
         public event Action<IDialogResult> RequestClose;
 
-        
+        private DateTime _displayDateEnd;
+
+        private DateTime _displayDateStart = new DateTime(1990/1/1);
+
+        private bool _isEnable = true;
+        public string Title => "注册对话";
+
+        private string _message;
+
+        private string _password;
+
+        private string _ReturnValue;
+
+        private UserEntity _user = new UserEntity();
+
+        private string _verification;
 
         #endregion
 
         #region 属性
 
-        public string DialogResultStr { get; private set; }
-        /// <summary>
-        /// 关闭窗口
-        /// </summary>
-        public DelegateCommand<string> CloseCommand { get; private set; }
-        /// <summary>
-        /// 发送验证码
-        /// </summary>
-        public DelegateCommand SendVerificationCommand { get; private set; }
-        /// <summary>
-        /// 登录命令
-        /// </summary>
-        public DelegateCommand RegisterCommand { get; private set; }
+        public DateTime DisplayDateEnd
+        {
+            get { return _displayDateEnd; }
+            set { SetProperty(ref _displayDateEnd, value); }
+        }
 
-        private bool _isEnabled = true;
+        public DateTime DisplayDateStart
+        {
+            get { return _displayDateStart; }
+            set { SetProperty(ref _displayDateStart, value); }
+        }
+
         /// <summary>
         /// 按钮,文本框是否可用属性
         /// </summary>
-        public bool IsEnabled
+        public bool IsEnable
         {
-            get
-            {
-                return _isEnabled;
-            }
-            set
-            {
-                SetProperty(ref _isEnabled, value);
-            }
+            get { return _isEnable; }
+            set { SetProperty(ref _isEnable, value); }
         }
 
-        private string _message;
-        /// <summary>
-        /// 提示信息
-        /// </summary>
         public string Message
         {
             get { return _message; }
             set { SetProperty(ref _message, value); }
         }
 
-        private string _returnMessage;
-        /// <summary>
-        /// 返回信息
-        /// </summary>
-        public string ReturnMessage
-        {
-            get { return _returnMessage; }
-            set { SetProperty(ref _returnMessage, value); }
-        }
-
-
-        private string userName;
-        /// <summary>
-        /// 用户名
-        /// </summary>
-        public string UserName
-        {
-            get { return userName; }
-            set { userName = value; RaisePropertyChanged(); }
-        }
-
-        private string password;
-        /// <summary>
-        /// 密码
-        /// </summary>
         public string Password
         {
-            get { return password; }
-            set { password = value; RaisePropertyChanged(); }
+            get { return _password; }
+            set { SetProperty(ref _password, value); }
         }
 
-        private string rePassword;
+
         /// <summary>
-        /// 重复密码
+        /// 会话返回数据
         /// </summary>
-        public string RePassword
+        public string ReturnValue
         {
-            get { return rePassword; }
-            set { rePassword = value; RaisePropertyChanged(); }
+            get { return _ReturnValue; }
+            set { SetProperty(ref _ReturnValue, value); }
         }
 
-        private string telphone;
         /// <summary>
-        /// 手机号码
+        /// 承载用户数据
         /// </summary>
-        public string Telphone
+        public UserEntity User 
         {
-            get { return telphone; }
-            set { telphone = value; RaisePropertyChanged(); }
+            get { return _user; }
+            set { SetProperty(ref _user, value); }
         }
 
-        private string verification;
         /// <summary>
         /// 验证码
         /// </summary>
         public string Verification
         {
-            get { return verification; }
-            set { verification = value; RaisePropertyChanged(); }
+            get { return _verification; }
+            set { SetProperty(ref _verification, value); }
         }
+
 
         #endregion
 
+        #region 命令
+        public DelegateCommand<string> DelegateCommand { get; set; }
+        #endregion
 
-        public RegisterViewModel(IRegionManager regionManager, IRestSharpService restSharpService) : base(regionManager)
+        #region 函数
+        public RegisterViewModel(IRegionManager regionManager, IRestSharpServerBase<ApiResponse, UserEntity> userService) : base(regionManager)
         {
             _regionManager = regionManager;
-            _restSharpService = restSharpService;
-            CloseCommand = new DelegateCommand<string>(Close);
-            RegisterCommand = new DelegateCommand(Register);
-            SendVerificationCommand = new DelegateCommand(VerificationSending);
-            ReturnMessage = "退出注册窗口.";
+            _userService = userService;
+            DelegateCommand = new DelegateCommand<string>(DelegateMethod);
+            User.Birthday = DisplayDateEnd = DateTime.Now;
+            
         }
-
-        
-
-
-
-
 
         public bool CanCloseDialog()
         {
             return true;
         }
 
+        public void Close()
+        {
+            if (MessageBox.Show($"确认退出{Title}？", "请选择", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            {
+                var result = new DialogResult();
+                result.Parameters.Add("ReturnValue", ReturnValue);
+                RequestClose?.Invoke(result);
+            }
+        }
+
+        private void DelegateMethod(string arg)
+        {
+            switch (arg)
+            {
+                case "Close":
+                    Close();
+                    break;
+                case "Register":
+                    Register();
+                    break;
+                case "Verify":
+                    Message = "验证码为：adjf";
+                    break;
+                default:
+                    break;
+            }
+        }
+
         public void OnDialogClosed()
         {
-            
+
         }
 
         public void OnDialogOpened(IDialogParameters parameters)
         {
-            
+
         }
 
-        /// <summary>
-        /// 关闭逻辑
-        /// </summary>
-        private void Close(string para)
+        private async void Register()
         {
-            DialogResult dialogResult = new DialogResult();
-            dialogResult.Parameters.Add("dia", para);
-            RequestClose?.Invoke(dialogResult) ;
-        }
-
-        private void VerificationSending()
-        {
-            Message = "验证码已经发送,请注意查收短信.";
-        }
-
-
-        /// <summary>
-        /// 登录逻辑
-        /// </summary>
-        private void Register()
-        {
-            if(string.IsNullOrEmpty(UserName) || string.IsNullOrEmpty(Password) 
-                || string.IsNullOrEmpty(RePassword) || string.IsNullOrEmpty(Telphone))
+            try
             {
-                Message = "请完善资料.";
-                return;
+                
+                if (string.IsNullOrWhiteSpace(User.Avatar))
+                {
+                    User.Avatar = "C:\\Users\\紫枫伊\\Documents\\source\\repos\\NoteApp\\NoteApp\\NoteApp\\Resources\\Images\\note.png";
+                }
+                if (string.IsNullOrWhiteSpace(Password))
+                {
+                    throw new Exception("再次输入的密码不能为空.");
+                }
+                if (!Password.Equals(User.Password))
+                {
+                    throw new Exception("两次密码输入不一致.");
+                }
+                if (User.Birthday.Equals(new DateTime()))
+                {
+                    throw new Exception("请选择你的出生日期.");
+                }
+                if (string.IsNullOrWhiteSpace(Verification))
+                {
+                    throw new Exception("请输入验证码.");
+                }
+                if (!Verification.Equals("adjf"))
+                {
+                    throw new Exception("验证码错误.");
+                }
+                User.CreateTime = DateTime.Now;
+                User.UpdateTime = DateTime.Now;
+                ApiResponse response = await _userService.PostApiResponseAsync(User);
+                if (response.Status)
+                {
+                    IsEnable = !IsEnable;
+                }
+                MessageBox.Show($"{response.Status.ToString()}\n\r{response.Message}\n\r{response.Object}");
+                Message = response.Status.ToString() + "-" + response.Message+"\n\r"+response.Object;
             }
-            if (Password != Password)
+            catch (Exception ex)
             {
-                Message = "请确保密码输入一致..";
-                return;
-            }
-            if (string.IsNullOrEmpty(Verification))
-            {
-                Message = "请输入验证码.";
-                return;
-            }
-            if (Verification != "fajh")
-            {
-                Message = "验证码错误.";
-                return;
-            }
-            else
-            {
-                ApiResponseU apiResponse = _restSharpService.PostApiResponse(WebApiUrl.RegisterUserUrl, UserName,Password,Telphone);
-                Message = apiResponse.Message;
-                if (!apiResponse.Status)                    
-                    return;
-                IsEnabled = false;
-                ReturnMessage = $"您已成功完成注册\n\r账号:{apiResponse.Object.ID}\n\r用户名:{apiResponse.Object.UserName}\n\r请牢记密码，防止丢失账号.";
+                Message = $"RegisterViewModel-Register-{ex.Message}";
             }
         }
+
+        #endregion
+
     }
 }

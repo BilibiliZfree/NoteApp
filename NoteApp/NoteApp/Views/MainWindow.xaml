@@ -6,7 +6,6 @@
     xmlns:core="clr-namespace:NoteApp.Core;assembly=NoteApp.Core"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:prism="http://prismlibrary.com/"
-    Title="{Binding Title}"
     Width="1280"
     Height="720"
     prism:ViewModelLocator.AutoWireViewModel="True"
@@ -28,20 +27,20 @@
                     <StackPanel Orientation="Horizontal">
                         <ToggleButton IsChecked="{Binding IsLeftDrawerOpen}" Style="{DynamicResource MaterialDesignHamburgerToggleButton}" />
                         <Button
-                            Command="{Binding DelegateCommands}"
+                            Command="{Binding DelegateCommand}"
                             CommandParameter="HomePageView"
                             Style="{DynamicResource MaterialDesignIconForegroundButton}">
                             <materialDesign:PackIcon Kind="Home" />
                         </Button>
                         <Button
-                            Command="{Binding DelegateCommands}"
-                            CommandParameter="PageBack"
+                            Command="{Binding DelegateCommand}"
+                            CommandParameter="NavigateBack"
                             Style="{DynamicResource MaterialDesignIconForegroundButton}">
                             <materialDesign:PackIcon Kind="ArrowBack" />
                         </Button>
                         <Button
-                            Command="{Binding DelegateCommands}"
-                            CommandParameter="PageForward"
+                            Command="{Binding DelegateCommand}"
+                            CommandParameter="NavigateForward"
                             Style="{DynamicResource MaterialDesignIconForegroundButton}">
                             <materialDesign:PackIcon Kind="ArrowForward" />
                         </Button>
@@ -58,7 +57,7 @@
                                 Margin="5"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
-                                Source="C:\Users\紫枫伊\Documents\source\repos\NoteApp\NoteApp\NoteApp\Resources\Images\note.png">
+                                Source="{Binding UserEntity.Avatar}">
                                 <Image.Clip>
                                     <!--  图片裁剪  -->
                                     <EllipseGeometry
@@ -71,30 +70,20 @@
                         <StackPanel>
                             <Button
                                 x:Name="LoginOutButton"
-                                Command="{Binding DelegateCommands}"
+                                Command="{Binding DelegateCommand}"
                                 CommandParameter="LoginOut"
                                 Content="注销用户"
                                 Style="{DynamicResource MaterialDesignFlatButton}" />
                             <Button
                                 x:Name="CloseButton"
-                                Command="{Binding DelegateCommands}"
+                                Command="{Binding DelegateCommand}"
                                 CommandParameter="Exit"
                                 Content="退出应用"
                                 Style="{DynamicResource MaterialDesignFlatButton}" />
                             <Button
-                                Command="{Binding DelegateCommands}"
-                                CommandParameter="ClearPages"
+                                Command="{Binding DelegateCommand}"
+                                CommandParameter="ClearNavigations"
                                 Content="清理页面"
-                                Style="{DynamicResource MaterialDesignFlatButton}" />
-                            <Button
-                                Command="{Binding DelegateCommands}"
-                                CommandParameter="ViewB"
-                                Content="打开ViewB"
-                                Style="{DynamicResource MaterialDesignFlatButton}" />
-                            <Button
-                                Command="{Binding DelegateCommands}"
-                                CommandParameter="ViewC"
-                                Content="打开ViewC"
                                 Style="{DynamicResource MaterialDesignFlatButton}" />
                         </StackPanel>
                     </materialDesign:PopupBox>
@@ -125,13 +114,11 @@
                             </Button>
                         </Grid>
                     </Border>
-
                     <TextBlock
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
                         FontSize="20"
                         Text="NoteApp" />
-
                 </DockPanel>
             </materialDesign:ColorZone>
             <materialDesign:DrawerHost
@@ -146,7 +133,7 @@
                             Margin="10"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
-                            Source="C:\Users\紫枫伊\Documents\source\repos\NoteApp\NoteApp\NoteApp\Resources\Images\note.png">
+                            Source="{Binding UserEntity.Avatar}">
                             <Image.Clip>
                                 <!--  图片裁剪  -->
                                 <EllipseGeometry
@@ -175,14 +162,28 @@
                                 Foreground="CadetBlue"
                                 Text="{Binding UserEntity.UserName}" />
                         </Grid>
-
                         <Button
                             Height="36"
                             Margin="10,5"
-                            Command="{Binding DelegateCommands}"
+                            Command="{Binding DelegateCommand}"
+                            CommandParameter="WriteBlogView"
+                            FontSize="24">
+                            <TextBlock>
+                                <materialDesign:PackIcon Kind="FileEdit" />
+                                新建博客
+                            </TextBlock>
+                        </Button>
+                        <Button
+                            Height="36"
+                            Margin="10,5"
+                            Command="{Binding DelegateCommand}"
                             CommandParameter="BlogsListView"
-                            Content="博客列表"
-                            FontSize="24" />
+                            FontSize="24">
+                            <TextBlock>
+                                <materialDesign:PackIcon Kind="ViewList" />
+                                博客列表
+                            </TextBlock>
+                        </Button>
                     </StackPanel>
                 </materialDesign:DrawerHost.LeftDrawerContent>
                 <ContentControl prism:RegionManager.RegionName="{x:Static core:RegionNames.ContentRegion}" />

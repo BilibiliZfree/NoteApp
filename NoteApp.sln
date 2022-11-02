@@ -29,6 +29,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NoteApp.Models", "NoteApp\N
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NoteApp.Services.Tests", "NoteApp\Tests\NoteApp.Services.Tests\NoteApp.Services.Tests.csproj", "{4A20B292-0F6C-4F1A-AC0A-E67A941F181D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B6AA4C9C-1466-4EA7-BEDD-6B37B9B1D7B8}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
