@@ -2,12 +2,13 @@
     x:Class="NoteApp.Modules.ModuleName.Views.WriteBlogView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ce="clr-namespace:NoteApp.Modules.ModuleName.ControlsExtension"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:NoteApp.Modules.ModuleName.Views"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
-    d:DesignHeight="930"
+    d:DesignHeight="1280"
     d:DesignWidth="1280"
     prism:ViewModelLocator.AutoWireViewModel="True"
     mc:Ignorable="d">
@@ -296,20 +297,31 @@
                     BorderBrush="Black"
                     BorderThickness="1"
                     DockPanel.Dock="Top"
-                    Document="{Binding BindFlowDocument}" />
-                <DockPanel Margin="5" LastChildFill="True">
+                    TextChanged="RichTextChanged" />
+                <DockPanel
+                    Margin="5"
+                    DockPanel.Dock="Top"
+                    LastChildFill="True">
                     <Button
                         Margin="5"
-                        Click="GetRichText_Click"
+                        Click="RichTextChanged"
                         Content="获取富文本"
                         DockPanel.Dock="Right" />
                     <TextBox
                         x:Name="Text_TextBox"
+                        Height="auto"
                         Margin="5"
+                        AcceptsReturn="True"
                         AllowDrop="True"
+                        IsReadOnly="True"
                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                        Text="{Binding Blog.Context}" />
+                        Text="{Binding Blog.Context, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
+                        TextWrapping="Wrap" />
                 </DockPanel>
+                <TextBlock
+                    FontSize="24"
+                    Foreground="Red"
+                    Text="{Binding Message}" />
             </DockPanel>
 
         </ScrollViewer>

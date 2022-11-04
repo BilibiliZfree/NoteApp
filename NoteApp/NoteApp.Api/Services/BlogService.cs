@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using NoteApp.Api.Data;
 using NoteApp.Api.Services.Interfaces;
 using NoteApp.Models;
@@ -138,6 +137,8 @@ namespace NoteApp.Api.Services
                 return new ApiResponse($"Api-BlogService-PutResponseAsync-{ex.Message}.");
             }
         }
+
+
 
         public async Task<BlogEntity> FindEntityByIdAsync(int id)
         {

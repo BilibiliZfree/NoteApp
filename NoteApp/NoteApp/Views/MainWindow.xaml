@@ -72,7 +72,7 @@
                                 x:Name="LoginOutButton"
                                 Command="{Binding DelegateCommand}"
                                 CommandParameter="LoginOut"
-                                Content="注销用户"
+                                Content="退出登录"
                                 Style="{DynamicResource MaterialDesignFlatButton}" />
                             <Button
                                 x:Name="CloseButton"

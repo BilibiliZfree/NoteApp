@@ -29,7 +29,7 @@
                 Style="{StaticResource MaterialDesignOutlinedComboBox}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
-                        <i:InvokeCommandAction Command="{Binding}" CommandParameter="{Binding}" />
+                        <i:InvokeCommandAction Command="{Binding DelegateCommand}" CommandParameter="{Binding ElementName=GetAllOrMyBlogs, Path=SelectedItem}" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
                 <ComboBoxItem Content="全部" />
@@ -53,7 +53,7 @@
                 Style="{StaticResource MaterialDesignOutlinedComboBox}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
-                        <i:InvokeCommandAction Command="{Binding}" CommandParameter="{Binding}" />
+                        <i:InvokeCommandAction Command="{Binding DelegateCommand}" CommandParameter="{Binding}" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
                 <ComboBoxItem Content="默认" />
@@ -69,7 +69,7 @@
             ScrollViewer.VerticalScrollBarVisibility="Hidden"
             Style="{DynamicResource MaterialDesignScrollViewer}">
             <StackPanel MaxWidth="1260" AllowDrop="True">
-                <ItemsControl ItemsSource="{Binding}">
+                <ItemsControl ItemsSource="{Binding BlogsList, Mode=OneWay, NotifyOnSourceUpdated=True}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <WrapPanel />
@@ -88,12 +88,13 @@
                                             <ColumnDefinition Width="auto" />
                                             <ColumnDefinition />
                                         </Grid.ColumnDefinitions>
+                                        <!--  封面  -->
                                         <Image
                                             Grid.Column="0"
                                             Width="270"
                                             Height="186"
                                             Margin="5"
-                                            Source="C:\Users\紫枫伊\Documents\source\repos\NoteApp\NoteApp\NoteApp\Resources\Images\日本街头.jpeg"
+                                            Source="{Binding PictrueLink, Mode=OneWay, NotifyOnSourceUpdated=True}"
                                             Stretch="UniformToFill" />
                                         <Grid Grid.Column="1" Margin="10,0">
                                             <Grid.RowDefinitions>
@@ -101,18 +102,20 @@
                                                 <RowDefinition Height="70" />
                                                 <RowDefinition Height="auto" />
                                             </Grid.RowDefinitions>
+                                            <!--  标题  -->
                                             <Button
                                                 Height="54"
                                                 Margin="0,10"
                                                 HorizontalContentAlignment="Left"
                                                 BorderThickness="0,0,0,1"
-                                                Content="{Binding}"
+                                                Content="{Binding Title, Mode=OneWay, NotifyOnSourceUpdated=True}"
                                                 FontSize="36"
                                                 Style="{DynamicResource MaterialDesignOutlinedButton}" />
+                                            <!--  简介  -->
                                             <TextBlock
                                                 Grid.Row="1"
                                                 Width="940"
-                                                Text="{Binding}"
+                                                Text="{Binding Context, Mode=OneWay, NotifyOnSourceUpdated=True}"
                                                 TextTrimming="WordEllipsis"
                                                 TextWrapping="Wrap" />
                                             <StackPanel
@@ -120,6 +123,7 @@
                                                 Margin="8"
                                                 HorizontalAlignment="Right"
                                                 Orientation="Horizontal">
+                                                <!--  被浏览次数  -->
                                                 <Button
                                                     Width="30"
                                                     Padding="2,0,2,0"
@@ -127,7 +131,8 @@
                                                     Style="{StaticResource MaterialDesignToolButton}">
                                                     <materialDesign:PackIcon Kind="Eye" />
                                                 </Button>
-                                                <TextBlock VerticalAlignment="Center" Text="0" />
+                                                <TextBlock VerticalAlignment="Center" Text="{Binding Hits, Mode=OneWay, NotifyOnSourceUpdated=True}" />
+                                                <!--  被收藏数  -->
                                                 <Button
                                                     Width="30"
                                                     Padding="2,0,2,0"
@@ -135,7 +140,8 @@
                                                     Style="{StaticResource MaterialDesignToolButton}">
                                                     <materialDesign:PackIcon Kind="Heart" />
                                                 </Button>
-                                                <TextBlock VerticalAlignment="Center" Text="0" />
+                                                <TextBlock VerticalAlignment="Center" Text="{Binding Likes, Mode=OneWayToSource}" />
+                                                <!--  其它选项  -->
                                                 <materialDesign:PopupBox Padding="2,0,2,0" Style="{DynamicResource MaterialDesignToolPopupBox}">
                                                     <StackPanel>
                                                         <Button Content="More" />

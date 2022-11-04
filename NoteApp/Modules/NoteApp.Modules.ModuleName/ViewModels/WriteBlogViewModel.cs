@@ -1,4 +1,5 @@
-﻿using NoteApp.Core;
+﻿using Newtonsoft.Json;
+using NoteApp.Core;
 using NoteApp.Core.Mvvm;
 using NoteApp.Models;
 using NoteApp.Services;
@@ -15,6 +16,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Documents;
+using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Xml.Linq;
@@ -152,7 +154,7 @@ namespace NoteApp.Modules.ModuleName.ViewModels
             }
         }
 
-        private void DelegateMethod(string arg)
+        private async void DelegateMethod(string arg)
         {
             switch (arg)
             {
@@ -160,7 +162,7 @@ namespace NoteApp.Modules.ModuleName.ViewModels
                     ShowDialog(arg);
                     break;
                 case "UploadBlog":
-                    UploadBlog();
+                    await UploadBlogAsync();
                     break;
                 default:
                     break;
@@ -201,16 +203,29 @@ namespace NoteApp.Modules.ModuleName.ViewModels
         /// <summary>
         /// 上传博客
         /// </summary>
-        private void UploadBlog()
+        private async Task UploadBlogAsync()
         {
             Blog.CreateTime = DateTime.Now;
             Blog.UpdateTime = DateTime.Now;
-            //ApiResponse response = await _blogService.PostApiResponseAsync(Blog);
-            //if (response.Status)
-            //{
+            if (string.IsNullOrWhiteSpace(Blog.Title))
+            {
+                Message = "请输入标题";
+            }
+            ApiResponse blogResponse = await _blogService.PostApiResponseAsync(Blog);
+            if (blogResponse.Status)
+            {
+                Message = blogResponse.Message;
+                string json = JsonConvert.SerializeObject(blogResponse.Object);
+                BlogEntity blog = JsonConvert.DeserializeObject<BlogEntity>(json);
+                BlogsRelation blogsRelation = new BlogsRelation { BlogID = blog.ID, UserID = User.ID };
+                ApiResponse relationResponse = await _blogsRelation.PostApiResponseAsync(blogsRelation);
+                if (relationResponse.Status)
+                {
+                    Message += $"\n\r{relationResponse.Message}";
+                }
+            }
 
-            //}
-            MessageBox.Show(Blog.Context);
+            //MessageBox.Show(Blog.Context);
         }
 
         #endregion

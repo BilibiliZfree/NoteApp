@@ -1,22 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc.RazorPages;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Reflection.Metadata;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Diagnostics;
 using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Xaml;
+using System.Windows.Markup;
 using System.Xml;
+using System.Xml.Serialization;
 
 namespace NoteApp.Modules.ModuleName.Views
 {
@@ -30,14 +18,19 @@ namespace NoteApp.Modules.ModuleName.Views
             InitializeComponent();
         }
 
-        private void GetRichText_Click(object sender, RoutedEventArgs e)
+        private void RichTextChanged(object sender, RoutedEventArgs e)
         {
 
             //FlowDocument document = RichText_TextBox.Document;
             //TextRange range = new TextRange(RichText_TextBox.Document.ContentStart, RichText_TextBox.Document.ContentEnd);
 
+            
+            string xw = XamlWriter.Save(RichText_TextBox.Document);
 
-            string xw = System.Windows.Markup.XamlWriter.Save(RichText_TextBox.Document);
+
+            //FlowDocument flow = (FlowDocument)XamlReader.Parse(xw);
+            //TextRange range = new TextRange(flow.ContentStart, flow.ContentEnd);
+            
             //FileStream stream = new FileStream(@".\AboutMyDog.xaml", FileMode.Create);
 
             //range.Save(stream, DataFormats.Xaml);
@@ -46,6 +39,7 @@ namespace NoteApp.Modules.ModuleName.Views
             //stream.Close();
 
             Text_TextBox.Text = xw;
+            //Text_TextBox.Text = range.Text;
         }
     }
 }
