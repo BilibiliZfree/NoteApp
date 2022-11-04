@@ -200,7 +200,7 @@ namespace NoteApp.Api.Services
                         }
                         else
                             throw new Exception($"找不到{key}为{arg}的博客.");
-                    case "Classification":
+                    case "Enums":
                         ICollection<BlogEntity> users_Classification = await _noteAppContext.Blogs.Where(o => o.Classification == arg).ToListAsync();
                         if (users_Classification.Count > 0)
                         {

@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using DryIoc;
+using System.Windows;
 
 namespace NoteApp.Views
 {

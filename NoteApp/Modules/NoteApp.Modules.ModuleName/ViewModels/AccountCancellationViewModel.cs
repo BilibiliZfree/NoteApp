@@ -22,7 +22,7 @@ namespace NoteApp.Modules.ModuleName.ViewModels
 
         private readonly IRegionManager _regionManager;
 
-        private readonly IRestSharpServerBase<ApiResponse, UserEntity> _userService;
+        private readonly IRestSharpServiceBase<ApiResponse, UserEntity> _userService;
 
         public event Action<IDialogResult> RequestClose;
 
@@ -92,7 +92,7 @@ namespace NoteApp.Modules.ModuleName.ViewModels
 
         #region 函数
 
-        public AccountCancellationViewModel(IDialogService dialogService, IRestSharpServerBase<ApiResponse, UserEntity> userService, IRegionManager regionManager) : base(regionManager)
+        public AccountCancellationViewModel(IDialogService dialogService, IRestSharpServiceBase<ApiResponse, UserEntity> userService, IRegionManager regionManager) : base(regionManager)
         {
             _dialogService = dialogService;
             _regionManager = regionManager;

@@ -86,7 +86,9 @@ namespace NoteApp
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
             //containerRegistry.RegisterSingleton<IMessageService, MessageService>();
-            containerRegistry.RegisterSingleton<IRestSharpServerBase<ApiResponse, UserEntity>, UserServer>();
+            containerRegistry.RegisterSingleton<IRestSharpServiceBase<ApiResponse, UserEntity>, UserServer>();
+            containerRegistry.RegisterSingleton<IRestSharpServiceBase<ApiResponse, BlogEntity>, BlogServer>();
+            containerRegistry.RegisterSingleton<IRestSharpServiceBase<ApiResponse, BlogsRelation>, BlogsRelationServer>();
             //containerRegistry.RegisterDialogWindow<ShowDialogWindow>("ShowDialogWindow");
 
         }

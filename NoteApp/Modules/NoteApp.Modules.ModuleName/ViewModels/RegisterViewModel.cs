@@ -21,7 +21,7 @@ namespace NoteApp.Modules.ModuleName.ViewModels
 
         private readonly IRegionManager _regionManager;
 
-        private readonly IRestSharpServerBase<ApiResponse, UserEntity> _userService;
+        private readonly IRestSharpServiceBase<ApiResponse, UserEntity> _userService;
 
         public event Action<IDialogResult> RequestClose;
 
@@ -115,7 +115,7 @@ namespace NoteApp.Modules.ModuleName.ViewModels
         #endregion
 
         #region 函数
-        public RegisterViewModel(IRegionManager regionManager, IRestSharpServerBase<ApiResponse, UserEntity> userService) : base(regionManager)
+        public RegisterViewModel(IRegionManager regionManager, IRestSharpServiceBase<ApiResponse, UserEntity> userService) : base(regionManager)
         {
             _regionManager = regionManager;
             _userService = userService;

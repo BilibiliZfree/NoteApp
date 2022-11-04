@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace NoteApp.Services.Interfaces
 {
-    public interface IRestSharpServerBase<T,E>
+    public interface IRestSharpServiceBase<T,E>
     {
         /// <summary>
         /// 删除<typeparamref name="E"/>数据

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace NoteApp.Services
 {
-    public class UserServer : IRestSharpServerBase<ApiResponse, UserEntity>
+    public class UserServer : IRestSharpServiceBase<ApiResponse, UserEntity>
     {
         private static RestClient client = new RestClient(StaticField.Api_Url);
 

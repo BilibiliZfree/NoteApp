@@ -25,7 +25,7 @@ namespace NoteApp.Api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Classification")
+                    b.Property<string>("Enums")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Collections")

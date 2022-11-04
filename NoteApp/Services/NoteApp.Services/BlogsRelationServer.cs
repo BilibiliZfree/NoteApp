@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace NoteApp.Services
 {
-    public class BlogsRelationServer : IRestSharpServerBase<ApiResponse, BlogsRelation>
+    public class BlogsRelationServer : IRestSharpServiceBase<ApiResponse, BlogsRelation>
     {
         private static RestClient client = new RestClient(StaticField.Api_Url);
         public async Task<ApiResponse> DeleteApiResponseAsync(int id)
