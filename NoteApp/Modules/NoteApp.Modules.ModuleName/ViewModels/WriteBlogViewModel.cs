@@ -20,7 +20,6 @@ using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Xml.Linq;
-using static NoteApp.Models.Enums;
 
 namespace NoteApp.Modules.ModuleName.ViewModels
 {
@@ -38,8 +37,6 @@ namespace NoteApp.Modules.ModuleName.ViewModels
         private readonly IRestSharpServiceBase<ApiResponse, UserEntity> _userService;
 
         private BlogEntity _Blog = new BlogEntity();
-
-        private ICollection<string> _Classifications = new List<string>();
 
         private FlowDocument _BindFlowDocument;
 
@@ -61,12 +58,6 @@ namespace NoteApp.Modules.ModuleName.ViewModels
         {
             get { return _Blog; }
             set { SetProperty(ref _Blog, value); }
-        }
-
-        public ICollection<string> Classifications
-        {
-            get { return _Classifications; }
-            set { _Classifications = value; }
         }
 
         public FlowDocument BindFlowDocument
@@ -147,11 +138,7 @@ namespace NoteApp.Modules.ModuleName.ViewModels
                 doubles[i] = (double)(i * 2);
             }
             FontSize = doubles;
-            Type classifications = typeof(Classification);
-            foreach (var item in Enum.GetValues(classifications))
-            {
-                Classifications.Add(item.ToString());
-            }
+            
         }
 
         private async void DelegateMethod(string arg)

@@ -30,7 +30,7 @@ namespace NoteApp.Api.Controllers
 
         [HttpGet]
         [Tags("博客管理")]
-        public async Task<ApiResponse> SearchBlogsAsync([FromQuery]string arg, [FromQuery]string key) => await _blogService.GetsResponseAsync(arg, key);
+        public async Task<ApiResponse> SearchBlogsAsync([FromQuery]string data, [FromQuery]string key) => await _blogService.GetsResponseAsync(data, key);
 
         [HttpPost]
         [Tags("博客管理")]

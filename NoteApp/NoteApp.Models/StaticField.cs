@@ -49,6 +49,7 @@ namespace NoteApp.Models
         public const string Search_Key = "key";
         public const string UserId = "userid";
         public const string BlogId = "blogid";
+        public const string Classification_Key = "Classification";
         #endregion
     }
 }

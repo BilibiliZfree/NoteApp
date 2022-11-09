@@ -72,11 +72,11 @@ namespace NoteApp.Api.Services
             }
         }
 
-        public async Task<ApiResponse> GetsResponseAsync(string arg, string key)
+        public async Task<ApiResponse> GetsResponseAsync(string data, string key)
         {
             try
             {
-                return new ApiResponse(true, await SearchEntityAsync(arg, key));
+                return new ApiResponse(true, await SearchEntityAsync(data, key));
             }
             catch (Exception ex)
             {
@@ -185,30 +185,30 @@ namespace NoteApp.Api.Services
             throw new NotImplementedException();
         }
 
-        public async Task<ICollection<BlogEntity>> SearchEntityAsync(string arg, string key)
+        public async Task<ICollection<BlogEntity>> SearchEntityAsync(string data, string key)
         {
             try
             {
-                if (string.IsNullOrEmpty(arg))
+                if (string.IsNullOrEmpty(data))
                     throw new Exception($"传入{key}数据为空值.");
                 switch (key)
                 {
                     case "Title":
-                        ICollection<BlogEntity> blogs_Title = await _noteAppContext.Blogs.Where(o => o.Title == arg).ToListAsync();
+                        ICollection<BlogEntity> blogs_Title = await _noteAppContext.Blogs.Where(o => o.Title == data).ToListAsync();
                         if (blogs_Title.Count > 0)
                         {
                             return blogs_Title;
                         }
                         else
-                            throw new Exception($"找不到{key}为{arg}的博客.");
-                    case "Enums":
-                        ICollection<BlogEntity> users_Classification = await _noteAppContext.Blogs.Where(o => o.Classification == arg).ToListAsync();
+                            throw new Exception($"找不到{key}为{data}的博客.");
+                    case "Classification":
+                        ICollection<BlogEntity> users_Classification = await _noteAppContext.Blogs.Where(o => o.Classification == data).ToListAsync();
                         if (users_Classification.Count > 0)
                         {
                             return users_Classification;
                         }
                         else
-                            throw new Exception($"找不到{key}为{arg}的博客.");
+                            throw new Exception($"找不到{key}为{data}的博客.");
                     default:
                         throw new Exception("获取数据失败.");
                 }

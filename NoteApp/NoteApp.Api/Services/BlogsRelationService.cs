@@ -99,13 +99,13 @@ namespace NoteApp.Api.Services
             {
                 switch (key)
                 {
-                    case "UserId":
+                    case "userid":
                         ICollection<BlogsRelation> relation1 = await _noteAppContext.BlogsRelations.Where(o => o.UserID == data).ToListAsync();
                         if (relation1.Count > 0)
                             return new ApiResponse($"找到{relation1.Count}条关联数据.", true, relation1);
                         else
                             throw new Exception($"找不到相关记录.");
-                    case "BlogId":
+                    case "blogid":
                         ICollection<BlogsRelation> relation2 = await _noteAppContext.BlogsRelations.Where(o => o.BlogID == data).ToListAsync();
                         if (relation2.Count > 0)
                             return new ApiResponse($"找到{relation2.Count}条关联数据.", true, relation2);

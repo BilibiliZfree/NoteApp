@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:ce="clr-namespace:NoteApp.Modules.ModuleName.ControlsExtension"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:it="clr-namespace:NoteApp.Models;assembly=NoteApp.Models"
     xmlns:local="clr-namespace:NoteApp.Modules.ModuleName.Views"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -20,6 +21,16 @@
             <Setter Property="WindowStyle" Value="None" />
         </Style>
     </prism:Dialog.WindowStyle>
+    <UserControl.Resources>
+        <ObjectDataProvider
+            x:Key="ClassificationEnum"
+            MethodName="GetNames"
+            ObjectType="{x:Type it:ClassificationEnum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type Type="it:ClassificationEnum" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </UserControl.Resources>
     <Border Margin="5">
         <ScrollViewer ScrollViewer.VerticalScrollBarVisibility="Visible" Style="{DynamicResource MaterialDesignScrollViewer}">
             <DockPanel
@@ -55,8 +66,8 @@
                         materialDesign:HintAssist.Hint="博客分类"
                         DockPanel.Dock="Left"
                         FontSize="12"
-                        ItemsSource="{Binding Classifications}"
-                        SelectedIndex="2"
+                        ItemsSource="{Binding Source={StaticResource ClassificationEnum}}"
+                        SelectedIndex="0"
                         SelectedValue="{Binding Blog.Classification}"
                         Style="{DynamicResource MaterialDesignOutlinedComboBox}" />
                     <TextBox

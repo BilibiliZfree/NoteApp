@@ -69,7 +69,7 @@ namespace NoteApp.Services
             RestRequest request = new RestRequest(StaticField.BlogRelation_GetRelations);
             request.AddParameter(StaticField.Search_Data, data);
             request.AddParameter(StaticField.Search_Key, key);
-            RestResponse response = await client.DeleteAsync(request);
+            RestResponse response = await client.GetAsync(request);
             if (response.IsSuccessful)
             {
                 ApiResponse apiResponse = JsonConvert.DeserializeObject<ApiResponse>(response.Content);

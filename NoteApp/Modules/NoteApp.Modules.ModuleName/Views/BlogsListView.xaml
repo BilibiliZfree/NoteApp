@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:it="clr-namespace:NoteApp.Models;assembly=NoteApp.Models"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
@@ -11,6 +12,32 @@
     d:DesignWidth="800"
     prism:ViewModelLocator.AutoWireViewModel="True"
     mc:Ignorable="d">
+    <UserControl.Resources>
+        <ObjectDataProvider
+            x:Key="OnerEnum"
+            MethodName="GetNames"
+            ObjectType="{x:Type it:OnerEnum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type Type="it:OnerEnum" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider
+            x:Key="ClassificationEnum"
+            MethodName="GetNames"
+            ObjectType="{x:Type it:ClassificationEnum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type Type="it:ClassificationEnum" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider
+            x:Key="SortEnum"
+            MethodName="GetNames"
+            ObjectType="{x:Type it:SortEnum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type Type="it:SortEnum" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </UserControl.Resources>
     <DockPanel
         Margin="5"
         Background="#1BD9FF"
@@ -25,42 +52,51 @@
                 x:Name="GetAllOrMyBlogs"
                 Grid.Column="0"
                 materialDesign:HintAssist.Hint="博客分拣"
+                ItemsSource="{Binding Source={StaticResource OnerEnum}}"
                 SelectedIndex="0"
                 Style="{StaticResource MaterialDesignOutlinedComboBox}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
-                        <i:InvokeCommandAction Command="{Binding DelegateCommand}" CommandParameter="{Binding ElementName=GetAllOrMyBlogs, Path=SelectedItem}" />
+                        <i:InvokeCommandAction Command="{Binding DelegateCommand}" CommandParameter="{Binding ElementName=GetAllOrMyBlogs, Path=SelectedValue}" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
-                <ComboBoxItem Content="全部" />
-                <ComboBoxItem Content="个人" />
+                <!--<ComboBoxItem Content="全部" />
+                <ComboBoxItem Content="个人" />-->
             </ComboBox>
             <ComboBox
+                x:Name="BlogClassifications"
                 Grid.Column="1"
                 materialDesign:HintAssist.Hint="博客分类"
-                SelectedIndex="0"
-                Style="{StaticResource MaterialDesignOutlinedComboBox}">
-                <ComboBoxItem Content="全部" Tag="0" />
-                <ComboBoxItem Content="C#" />
-                <ComboBoxItem Content="WPF" />
-                <ComboBoxItem Content="数据库" />
-            </ComboBox>
-            <ComboBox
-                x:Name="BlogsSortByTime"
-                Grid.Column="2"
-                materialDesign:HintAssist.Hint="博客排序"
+                ItemsSource="{Binding Source={StaticResource ClassificationEnum}}"
                 SelectedIndex="0"
                 Style="{StaticResource MaterialDesignOutlinedComboBox}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
-                        <i:InvokeCommandAction Command="{Binding DelegateCommand}" CommandParameter="{Binding}" />
+                        <i:InvokeCommandAction Command="{Binding DelegateCommand}" CommandParameter="{Binding ElementName=BlogClassifications, Path=SelectedValue}" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
-                <ComboBoxItem Content="默认" />
+                <!--<ComboBoxItem Content="全部" Tag="0" />
+                <ComboBoxItem Content="C#" />
+                <ComboBoxItem Content="WPF" />
+                <ComboBoxItem Content="数据库" />-->
+            </ComboBox>
+            <ComboBox
+                x:Name="BlogsSort"
+                Grid.Column="2"
+                materialDesign:HintAssist.Hint="博客排序"
+                ItemsSource="{Binding Source={StaticResource SortEnum}}"
+                SelectedIndex="0"
+                Style="{StaticResource MaterialDesignOutlinedComboBox}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectionChanged">
+                        <i:InvokeCommandAction Command="{Binding DelegateCommand}" CommandParameter="{Binding ElementName=BlogsSort, Path=SelectedValue}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+                <!--<ComboBoxItem Content="默认" />
                 <ComboBoxItem Content="按发布时间升序" />
                 <ComboBoxItem Content="按发布时间降序" />
                 <ComboBoxItem Content="按修改时间升序" />
-                <ComboBoxItem Content="按修改时间降序" />
+                <ComboBoxItem Content="按修改时间降序" />-->
             </ComboBox>
         </Grid>
         <ScrollViewer
@@ -123,6 +159,10 @@
                                                 Margin="8"
                                                 HorizontalAlignment="Right"
                                                 Orientation="Horizontal">
+                                                <!--  最近修改时间  -->
+                                                <!--<TextBlock />
+                                                <TextBlock VerticalAlignment="Center" Text="{Binding Hits, Mode=OneWay, NotifyOnSourceUpdated=True}" />-->
+
                                                 <!--  被浏览次数  -->
                                                 <Button
                                                     Width="30"
@@ -140,7 +180,7 @@
                                                     Style="{StaticResource MaterialDesignToolButton}">
                                                     <materialDesign:PackIcon Kind="Heart" />
                                                 </Button>
-                                                <TextBlock VerticalAlignment="Center" Text="{Binding Likes, Mode=OneWayToSource}" />
+                                                <TextBlock VerticalAlignment="Center" Text="{Binding Likes, Mode=OneWay, NotifyOnSourceUpdated=True}" />
                                                 <!--  其它选项  -->
                                                 <materialDesign:PopupBox Padding="2,0,2,0" Style="{DynamicResource MaterialDesignToolPopupBox}">
                                                     <StackPanel>
