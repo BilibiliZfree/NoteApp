@@ -8,6 +8,7 @@ using Prism.Regions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Markup;
@@ -32,7 +33,7 @@ namespace NoteApp.Modules.ModuleName.ViewModels
 
         #region 属性
 
-        public DelegateCommand<string> DelegateCommand { get; private set; }
+        public DelegateCommand<object> DelegateCommand { get; private set; }
 
         public bool KeepAlive => false;
 
@@ -67,13 +68,13 @@ namespace NoteApp.Modules.ModuleName.ViewModels
             _regionManager = regionManager;
             _blogService = blogService;
             _blogsRelationService = blogRelationService;
-            DelegateCommand = new DelegateCommand<string>(DelegateMethod);
+            DelegateCommand = new DelegateCommand<object>(DelegateMethod);
             Configure();
         }
 
         public void Configure()
         {
-            User = AppSession.user;
+            User = AppSession.UserSession;
              GetAllBlogsAsync();
         }
 
@@ -106,9 +107,10 @@ namespace NoteApp.Modules.ModuleName.ViewModels
             return e;
         }
 
-        private void DelegateMethod(string obj)
+        private void DelegateMethod(object obj)
         {
-            switch (obj)
+            string switch_key = obj.ToString();
+            switch (switch_key)
             {
                 case "全部":
                     GetAllBlogsAsync();
@@ -116,19 +118,26 @@ namespace NoteApp.Modules.ModuleName.ViewModels
                 case "个人":
                     GetMyBlogsAsync();
                     break;
-                case "CSharp": SortByData(obj); break;
-                case "WPF": SortByData(obj); break;
-                case "Web": SortByData(obj); break;
-                case "Unity": SortByData(obj); break;
-                case "数据库": SortByData(obj); break;
-                case "按发布时间升序": SortByData(obj); break;
-                case "按发布时间降序": SortByData(obj); break;
-                case "按修改时间升序": SortByData(obj); break;
-                case "按修改时间降序": SortByData(obj); break;
+                case "CSharp": SortByData(switch_key); break;
+                case "WPF": SortByData(switch_key); break;
+                case "Web": SortByData(switch_key); break;
+                case "Unity": SortByData(switch_key); break;
+                case "数据库": SortByData(switch_key); break;
+                case "按发布时间升序": SortByData(switch_key); break;
+                case "按发布时间降序": SortByData(switch_key); break;
+                case "按修改时间升序": SortByData(switch_key); break;
+                case "按修改时间降序": SortByData(switch_key); break;
                 default:
+                    int result;
+                    if (int.TryParse(switch_key,out result))
+                    {
+                        ShowBlog(result);
+                    }
+                    
                     break;
             }
         }
+
 
         private async void GetAllBlogsAsync()
         {
@@ -143,7 +152,7 @@ namespace NoteApp.Modules.ModuleName.ViewModels
 
         private async void GetMyBlogsAsync()
         {
-            ApiResponse response = await _blogsRelationService.GetApiResponseAsync(AppSession.user.ID, StaticField.UserId);
+            ApiResponse response = await _blogsRelationService.GetApiResponseAsync(AppSession.UserSession.ID, StaticField.UserId);
             string relationList = JsonConvert.SerializeObject(response.Object);
             ICollection<BlogsRelation> relations = JsonConvert.DeserializeObject<ICollection<BlogsRelation>>(relationList);
             ICollection<BlogEntity> blogs = new List<BlogEntity> (){ };
@@ -169,6 +178,25 @@ namespace NoteApp.Modules.ModuleName.ViewModels
             }
             
         }
+
+        private async void ShowBlog(int obj)
+        {
+            //MessageBox.Show(obj);
+            ApiResponse response = await _blogService.GetApiResponseAsync(obj);
+            if (response.Status)
+            {
+                string json = JsonConvert.SerializeObject(response.Object);
+                AppSession.BlogSessionMethod(JsonConvert.DeserializeObject<BlogEntity>(json));
+            }
+            var server = Application.Current.MainWindow.DataContext as ICommandService; 
+            if (server != null) 
+            {
+                server.CommandOperation();
+            }
+            //BlogEntity 
+            //AppSession.BlogSessionMethod();
+        }
+
 
         private void SortByData(string data)
         {

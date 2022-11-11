@@ -48,7 +48,7 @@ namespace NoteApp
                     Environment.Exit(0);
                     return;
                 }
-                AppSession.session( callback.Parameters.GetValue<UserEntity>("user") );
+                AppSession.UserSessionMethod( callback.Parameters.GetValue<UserEntity>("UserSession") );
 
             });
             var server = Current.MainWindow.DataContext as IConfigureService;
@@ -68,7 +68,7 @@ namespace NoteApp
                     Environment.Exit(0);
                     return;
                 }
-                AppSession.session(callback.Parameters.GetValue<UserEntity>("user"));
+                AppSession.UserSessionMethod(callback.Parameters.GetValue<UserEntity>("UserSession"));
 
             });
             var server = Current.MainWindow.DataContext as IConfigureService;

@@ -167,7 +167,7 @@ namespace NoteApp.Modules.ModuleName.ViewModels
                     var js = JsonConvert.SerializeObject(response1.Object);
                     UserEntity user = JsonConvert.DeserializeObject<UserEntity>(js);
                     DialogParameters keyValues = new DialogParameters();
-                    keyValues.Add("user", user);
+                    keyValues.Add("UserSession", user);
                     RequestClose?.Invoke(new DialogResult(ButtonResult.OK, keyValues));
                 }
                 ApiResponse response2 = await _userService.LoginAsync(int.Parse(Account), Password);
@@ -176,7 +176,7 @@ namespace NoteApp.Modules.ModuleName.ViewModels
                     var js = JsonConvert.SerializeObject(response2.Object);
                     UserEntity user = JsonConvert.DeserializeObject<UserEntity>(js);
                     DialogParameters keyValues = new DialogParameters();
-                    keyValues.Add("user", user);
+                    keyValues.Add("UserSession", user);
                     RequestClose?.Invoke(new DialogResult(ButtonResult.OK, keyValues));
                 }
                 IsVisible();

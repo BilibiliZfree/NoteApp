@@ -4,12 +4,11 @@ using System.Text;
 
 namespace NoteApp.Services.Interfaces
 {
-
-    public interface IConfigureService
+    public interface ICommandService
     {
         /// <summary>
-        /// 配置页面初始化参数
+        /// 命令操作
         /// </summary>
-        void Configure();
+        void CommandOperation();
     }
 }

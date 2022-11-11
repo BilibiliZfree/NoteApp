@@ -9,7 +9,12 @@ namespace NoteApp.Core
 {
     public static class AppSession
     {
-        public static UserEntity user { get; private set; }
-        public static UserEntity session(UserEntity updateUser) => user = updateUser;
+        public static UserEntity UserSession { get; private set; }
+
+        public static BlogEntity BlogSeesion { get; private set; }
+
+        public static UserEntity UserSessionMethod(UserEntity updateUser) => UserSession = updateUser;
+
+        public static BlogEntity BlogSessionMethod(BlogEntity updateBlog) => BlogSeesion = updateBlog;
     }
 }

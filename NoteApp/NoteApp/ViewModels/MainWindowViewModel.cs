@@ -14,7 +14,7 @@ using System.Windows;
 
 namespace NoteApp.ViewModels
 {
-    public class MainWindowViewModel : RegionViewModelBase, IConfigureService, IRegionMemberLifetime
+    public class MainWindowViewModel : RegionViewModelBase, IConfigureService,ICommandService, IRegionMemberLifetime
     {
         #region 字段
 
@@ -82,13 +82,19 @@ namespace NoteApp.ViewModels
 
         }
 
+        public void CommandOperation()
+        {
+            //ClearNavigations();
+            RegionShow("ShowBlogView");
+        }
+
         /// <summary>
         /// 数据配置
         /// </summary>
         public void Configure()
         {
             ClearNavigations();
-            UserEntity = AppSession.user;
+            UserEntity = AppSession.UserSession;
             RegionShow("HomePageView");
         }
 
@@ -180,6 +186,8 @@ namespace NoteApp.ViewModels
                 }
             });
         }
+
+
         #endregion
 
 

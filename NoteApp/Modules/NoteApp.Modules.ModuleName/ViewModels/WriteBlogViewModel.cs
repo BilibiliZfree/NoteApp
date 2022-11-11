@@ -130,7 +130,7 @@ namespace NoteApp.Modules.ModuleName.ViewModels
 
         public void Configure()
         {
-            User = AppSession.user;
+            User = AppSession.UserSession;
             Blog.Comment_Status = true;
             double[] doubles = new double[50];
             for (int i = 2; i < 50; i++)

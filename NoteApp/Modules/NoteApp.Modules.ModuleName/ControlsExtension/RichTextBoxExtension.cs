@@ -14,21 +14,29 @@ namespace NoteApp.Modules.ModuleName.ControlsExtension
 {
     public class RichTextBoxExtension : DependencyObject
     {
+  
 
-
-        public FlowDocument MyProperty
+        public static FlowDocument GetFlowDocument(DependencyObject obj)
         {
-            get { return (FlowDocument)GetValue(MyPropertyProperty); }
-            set { SetValue(MyPropertyProperty, value); }
+            return (FlowDocument)obj.GetValue(FlowDocumentProperty);
         }
 
-        // Using a DependencyProperty as the backing store for MyProperty.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty MyPropertyProperty =
-            DependencyProperty.Register("MyProperty", typeof(FlowDocument), typeof(RichTextBoxExtension), new PropertyMetadata(new Document(),new PropertyChangedCallback(OnDocumentChanged)));
-
-        private static void OnDocumentChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        public static void SetFlowDocument(DependencyObject obj, FlowDocument value)
         {
-            MessageBox.Show(XamlWriter.Save(e.NewValue));
+            obj.SetValue(FlowDocumentProperty, value);
+        }
+
+        // Using a DependencyProperty as the backing store for FlowDocument.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty FlowDocumentProperty =
+            DependencyProperty.RegisterAttached("FlowDocument", typeof(FlowDocument), typeof(RichTextBoxExtension), new PropertyMetadata(FlowDocumentPropertyChanged));
+
+        private static void FlowDocumentPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            RichTextBox box = d as RichTextBox;
+            if (box != null)
+            {
+                box.Document = (FlowDocument)e.NewValue;
+            }
         }
     }
 }
