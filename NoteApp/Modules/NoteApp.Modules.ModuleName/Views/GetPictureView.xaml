@@ -7,14 +7,15 @@
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
+    x:Name="GetPicturesView"
     d:DesignHeight="450"
     d:DesignWidth="800"
     prism:ViewModelLocator.AutoWireViewModel="True"
     mc:Ignorable="d">
     <prism:Dialog.WindowStyle>
         <Style TargetType="prism:DialogWindow">
-            <Setter Property="Width" Value="540" />
-            <Setter Property="Height" Value="665" />
+            <Setter Property="Width" Value="720" />
+            <Setter Property="Height" Value="666" />
             <Setter Property="AllowsTransparency" Value="True" />
             <Setter Property="WindowStyle" Value="None" />
         </Style>
@@ -23,7 +24,7 @@
         <DockPanel>
             <DockPanel
                 Margin="5"
-                DockPanel.Dock="Bottom"
+                DockPanel.Dock="Top"
                 LastChildFill="True">
                 <Button
                     Margin="5"
@@ -45,30 +46,17 @@
                     materialDesign:HintAssist.Hint="图片链接地址"
                     Background="White"
                     DockPanel.Dock="Right"
-                    IsEnabled="{Binding IsEnable}"
                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
                     Text="{Binding ReturnValue}"
                     TextWrapping="NoWrap"
                     VerticalScrollBarVisibility="Auto" />
             </DockPanel>
+
             <TabControl
-                materialDesign:NavigationRailAssist.SelectionCornerRadius="50 10 10 10"
-                materialDesign:NavigationRailAssist.ShowSelectionBackground="True"
-                DockPanel.Dock="Bottom"
-                Style="{StaticResource MaterialDesignNavigatilRailTabControl}"
-                TabStripPlacement="Top">
-                <materialDesign:NavigationRailAssist.FloatingContent>
-                    <Button
-                        Margin="8"
-                        Background="LightSteelBlue"
-                        IsEnabled="False"
-                        Style="{StaticResource MaterialDesignFloatingActionAccentButton}">
-                        <materialDesign:PackIcon
-                            Width="24"
-                            Height="24"
-                            Kind="Plus" />
-                    </Button>
-                </materialDesign:NavigationRailAssist.FloatingContent>
+                VerticalContentAlignment="Top"
+                materialDesign:ColorZoneAssist.Mode="PrimaryMid"
+                Style="{StaticResource MaterialDesignNavigationRailTabControl}">
+
                 <TabItem>
                     <TabItem.Header>
                         <StackPanel Width="auto" Height="auto">
@@ -80,14 +68,74 @@
                             <TextBlock HorizontalAlignment="Center" Text="All Files" />
                         </StackPanel>
                     </TabItem.Header>
-                    <TextBlock>
-                        <Run Text="tab 1 content. Default look and behaviors." />
-                        <LineBreak />
-                        <LineBreak />
-                        <Run FontStyle="Italic">
-                            Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...
-                        </Run>
-                    </TextBlock>
+                    <!--  All Files  -->
+
+
+                    <ScrollViewer ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+
+                        <ItemsControl AllowDrop="True" ItemsSource="{Binding Path=LocalFileInfo, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <WrapPanel>
+
+                                        <StackPanel>
+                                            <Button
+                                                Width="auto"
+                                                Height="auto"
+                                                BorderThickness="0"
+                                                Command="{Binding ElementName=GetPicturesView, Path=DataContext.DelegateCommand}"
+                                                CommandParameter="{Binding FullName, Mode=OneWay, NotifyOnSourceUpdated=True}"
+                                                Style="{DynamicResource MaterialDesignOutlinedDarkButton}">
+                                                <materialDesign:PackIcon
+                                                    Width="48"
+                                                    Height="48"
+                                                    Margin="10,0"
+                                                    HorizontalAlignment="Center"
+                                                    Foreground="Black"
+                                                    Kind="{Binding Icon}" />
+                                            </Button>
+                                            <TextBox
+                                                Width="150"
+                                                HorizontalAlignment="Center"
+                                                HorizontalContentAlignment="Center"
+                                                FontSize="16"
+                                                IsReadOnly="True"
+                                                Style="{DynamicResource MaterialDesignComboBoxEditableTextBox}"
+                                                Text="{Binding Name, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                                ToolTip="{Binding Name, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        </StackPanel>
+                                    </WrapPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <!--<StackPanel>
+                                <Button
+                                    Width="auto"
+                                    Height="auto"
+                                    BorderThickness="0"
+                                    Style="{DynamicResource MaterialDesignOutlinedDarkButton}">
+                                    <materialDesign:PackIcon
+                                        Width="48"
+                                        Height="48"
+                                        Margin="10,0"
+                                        HorizontalAlignment="Center"
+                                        Foreground="Black"
+                                        Kind="File" />
+                                </Button>
+                                <TextBox
+                                    HorizontalAlignment="Center"
+                                    FontSize="16"
+                                    IsReadOnly="True"
+                                    Style="{DynamicResource MaterialDesignComboBoxEditableTextBox}"
+                                    Text="log.cs" />
+                            </StackPanel>-->
+
+                    </ScrollViewer>
                 </TabItem>
                 <TabItem>
                     <TabItem.Header>
@@ -100,14 +148,94 @@
                             <TextBlock HorizontalAlignment="Center" Text="Recent" />
                         </StackPanel>
                     </TabItem.Header>
-                    <TextBlock>
-                        <Run Text="tab 2 content. Default look and behaviors." />
-                        <LineBreak />
-                        <LineBreak />
-                        <Run FontStyle="Italic">
-                            Praesent sed dui arcu. Vivamus porta auctor sagittis
-                        </Run>
-                    </TextBlock>
+                    <WrapPanel>
+
+                        <StackPanel>
+                            <Button
+                                Width="auto"
+                                Height="auto"
+                                BorderThickness="0"
+                                Style="{DynamicResource MaterialDesignOutlinedDarkButton}">
+                                <materialDesign:PackIcon
+                                    Width="48"
+                                    Height="48"
+                                    Margin="10,0"
+                                    HorizontalAlignment="Center"
+                                    Foreground="Black"
+                                    Kind="File" />
+                            </Button>
+                            <TextBox
+                                HorizontalAlignment="Center"
+                                FontSize="16"
+                                IsReadOnly="True"
+                                Style="{DynamicResource MaterialDesignComboBoxEditableTextBox}"
+                                Text="log.cs" />
+                        </StackPanel>
+                        <StackPanel>
+                            <Button
+                                Width="auto"
+                                Height="auto"
+                                BorderThickness="0"
+                                Style="{DynamicResource MaterialDesignOutlinedDarkButton}">
+                                <materialDesign:PackIcon
+                                    Width="48"
+                                    Height="48"
+                                    Margin="10,0"
+                                    HorizontalAlignment="Center"
+                                    Foreground="Black"
+                                    Kind="Files" />
+                            </Button>
+                            <TextBox
+                                HorizontalAlignment="Center"
+                                FontSize="16"
+                                IsReadOnly="True"
+                                Style="{DynamicResource MaterialDesignComboBoxEditableTextBox}"
+                                Text="Files" />
+                        </StackPanel>
+                        <StackPanel>
+                            <Button
+                                Width="auto"
+                                Height="auto"
+                                BorderThickness="0"
+                                Style="{DynamicResource MaterialDesignOutlinedDarkButton}">
+                                <materialDesign:PackIcon
+                                    Width="48"
+                                    Height="48"
+                                    Margin="10,0"
+                                    HorizontalAlignment="Center"
+                                    Foreground="Black"
+                                    Kind="File" />
+                            </Button>
+                            <TextBox
+                                HorizontalAlignment="Center"
+                                FontSize="16"
+                                IsReadOnly="True"
+                                Style="{DynamicResource MaterialDesignComboBoxEditableTextBox}"
+                                Text="log.cs" />
+                        </StackPanel>
+                        <StackPanel>
+                            <Button
+                                Width="auto"
+                                Height="auto"
+                                BorderThickness="0"
+                                Style="{DynamicResource MaterialDesignOutlinedDarkButton}">
+                                <materialDesign:PackIcon
+                                    Width="48"
+                                    Height="48"
+                                    Margin="10,0"
+                                    HorizontalAlignment="Center"
+                                    Foreground="Black"
+                                    Kind="File" />
+                            </Button>
+                            <TextBox
+                                HorizontalAlignment="Center"
+                                FontSize="16"
+                                IsReadOnly="True"
+                                Style="{DynamicResource MaterialDesignComboBoxEditableTextBox}"
+                                Text="log.cs" />
+                        </StackPanel>
+
+                    </WrapPanel>
                 </TabItem>
                 <TabItem>
                     <TabItem.Header>
@@ -133,12 +261,12 @@
                                 Width="24"
                                 Height="24"
                                 HorizontalAlignment="Center"
-                                Kind="FileLink" />
-                            <TextBlock HorizontalAlignment="Center" Text="Links" />
+                                Kind="Error" />
+                            <TextBlock HorizontalAlignment="Center" Text="Message" />
                         </StackPanel>
                     </TabItem.Header>
                     <TextBlock>
-                        <Run Text="tab 4 content. Default look and behaviors." />
+                        <Run Text="{Binding Message}" />
                         <LineBreak />
                         <LineBreak />
                     </TextBlock>

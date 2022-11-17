@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace NoteApp.Modules.ModuleName.ViewModels
+namespace NoteApp.Modules.ModuleName.Views
 {
     /// <summary>
     /// ShowBlogView.xaml 的交互逻辑

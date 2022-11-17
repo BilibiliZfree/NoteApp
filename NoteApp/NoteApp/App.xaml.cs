@@ -85,6 +85,7 @@ namespace NoteApp
         /// <param name="containerRegistry">注册容器</param>
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
+            //注册完接口才能使用
             //containerRegistry.RegisterSingleton<IMessageService, MessageService>();
             containerRegistry.RegisterSingleton<IRestSharpServiceBase<ApiResponse, UserEntity>, UserServer>();
             containerRegistry.RegisterSingleton<IRestSharpServiceBase<ApiResponse, BlogEntity>, BlogServer>();
