@@ -71,6 +71,8 @@ namespace NoteApp
                 AppSession.UserSessionMethod(callback.Parameters.GetValue<UserEntity>("UserSession"));
 
             });
+            // 这里配置了主页面的默认页面，如果无法显示页面可以看这里
+            // 这里设置过了就不用再注册区域了
             var server = Current.MainWindow.DataContext as IConfigureService;
             if (server != null)
                 server.Configure();
